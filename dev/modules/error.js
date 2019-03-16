@@ -1,4 +1,4 @@
-function(sandbox) Error{
+function Error(sandbox) {
 	
 	this.sb = sandbox
 	

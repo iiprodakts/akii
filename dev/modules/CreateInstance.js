@@ -27,7 +27,7 @@ CreateInstance.prototype.parseQuery = function(){
 	  	
 	  }else{
 	  	
-	  	 this.done({ fail: 'failed'}')
+	  	 this.done({ fail: 'failed'})
 	  	
 	  }
 	  
