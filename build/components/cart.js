@@ -1,5 +1,8 @@
-'use strict';
+"use strict";
 
 function Home() {}
 
-undefined.emit({ type: 'render-component', data: Home });
+(void 0).emit({
+  type: 'render-component',
+  data: Home
+});

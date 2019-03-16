@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,37 +19,28 @@
  * under the License.
  */
 var app = {
-    // Application Constructor
-    initialize: function initialize() {
-        document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
-    },
+  // Application Constructor
+  initialize: function initialize() {
+    document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+  },
+  // deviceready Event Handler
+  //
+  // Bind any cordova events here. Common events are:
+  // 'pause', 'resume', etc.
+  onDeviceReady: function onDeviceReady() {
+    window.location.href = 'sana.html'; // var logbtn = document.getElementById('login-btn')
+    // logbtn.addEventListener('click',function(){
+    //     window.location.href = 'bargain.html'
+    // },false)
+  } // // Update DOM on a Received Event
+  // receivedEvent: function(id) {
+  //     var parentElement = document.getElementById(id);
+  //     var listeningElement = parentElement.querySelector('.listening');
+  //     var receivedElement = parentElement.querySelector('.received');
+  //     listeningElement.setAttribute('style', 'display:none;');
+  //     receivedElement.setAttribute('style', 'display:block;');
+  //     console.log('Received Event: ' + id);
+  // }
 
-    // deviceready Event Handler
-    //
-    // Bind any cordova events here. Common events are:
-    // 'pause', 'resume', etc.
-    onDeviceReady: function onDeviceReady() {
-
-        window.location.href = 'sana.html';
-        // var logbtn = document.getElementById('login-btn')
-        // logbtn.addEventListener('click',function(){
-
-        //     window.location.href = 'bargain.html'
-
-        // },false)
-    }
-
-    // // Update DOM on a Received Event
-    // receivedEvent: function(id) {
-    //     var parentElement = document.getElementById(id);
-    //     var listeningElement = parentElement.querySelector('.listening');
-    //     var receivedElement = parentElement.querySelector('.received');
-
-    //     listeningElement.setAttribute('style', 'display:none;');
-    //     receivedElement.setAttribute('style', 'display:block;');
-
-    //     console.log('Received Event: ' + id);
-    // }
 };
-
 app.initialize();
