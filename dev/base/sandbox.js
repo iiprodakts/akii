@@ -12,6 +12,10 @@ function SANDBOX(appCore){
 SANDBOX.prototype.create = function(moduleID,modInstId){
 
 	var sb_core = this.core;
+	var dom = sb_core.dom()
+	var events = sb_core.events()
+	var ajax = sb_core.ajax()
+	var converts = sb_core.converts()
 
 	// console.log('The value of Instance Id')
 	// console.log(modInstId)
@@ -20,7 +24,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 
 		// console.log('The module has a view')
 
-		var CONTAINER = this.core.dom.queryCont('data-'+moduleID, modInstId);
+		var CONTAINER = dom.queryCont('data-'+moduleID, modInstId);
 	
 		var meta = {
 			moduleId: moduleID,
@@ -93,7 +97,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_getById: function(selector){
 				
 					
-					return sb_core.dom.queryById(selector);
+					return dom.queryById(selector);
 
 
 
@@ -102,7 +106,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_getByTag: function(parent,selector){
 				
 					
-				return sb_core.dom.queryByTag(parent,selector);
+				return dom.queryByTag(parent,selector);
 
 
 
@@ -111,7 +115,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_getByAttribute: function(attrib){
 				
 					
-				return sb_core.dom.queryByAttribute(attrib);
+				return dom.queryByAttribute(attrib);
 
 
 
@@ -140,7 +144,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 					
 					
 
-				return sb_core.dom.queryNodeType(node);
+				return dom.queryNodeType(node);
 
 
 
@@ -150,7 +154,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_createElement: function(selector){
 					
 					
-				var el = sb_core.dom.createElement(selector);
+				var el = dom.createElement(selector);
 
 				return el;
 
@@ -160,7 +164,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_copyDeep: function(el){
 					
 					
-				var el = sb_core.dom.copyDeep(el);
+				var el = dom.copyDeep(el);
 
 				return el;
 
@@ -170,7 +174,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_copyShallow: function(el){
 					
 					
-				var el = sb_core.dom.copyShallow(el);
+				var el = dom.copyShallow(el);
 
 				return el;
 
@@ -180,28 +184,28 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_addProperty: function(el,attrib,attribValue){
 
 
-				sb_core.dom.addProperty(el,attrib,attribValue);
+				dom.addProperty(el,attrib,attribValue);
 
 			},
 
 			sb_removeProperty: function(el,attrib){
 
 
-				sb_core.dom.removeProperty(el,attrib);
+				dom.removeProperty(el,attrib);
 
 			},
 
 			sb_insertInner: function(el,content){
 
 
-				sb_core.dom.insertInner(el,content);
+				dom.insertInner(el,content);
 
 			},
 
 			sb_addChild: function(parent,child){
 
 
-				sb_core.dom.addChild(parent,child);
+				dom.addChild(parent,child);
 
 
 			},
@@ -209,7 +213,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_getClasses: function(element){
 
 
-				return sb_core.dom.getClasses(element);
+				return dom.getClasses(element);
 
 
 			},
@@ -217,7 +221,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_addClass: function(classlist,classname){
 
 
-		 		sb_core.dom.addClass(classlist,classname);
+		 		dom.addClass(classlist,classname);
 
 
 			},
@@ -225,7 +229,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_removeClass: function(classlist,classname){
 
 
-				 sb_core.dom.removeClass(classlist,classname);
+				 dom.removeClass(classlist,classname);
 
 
 			},
@@ -233,7 +237,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_toggleClass: function(classlist,classname){
 
 
-				 sb_core.dom.toggleClass(classlist,classname);
+				 dom.toggleClass(classlist,classname);
 
 
 			},
@@ -241,7 +245,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_hasClass: function(classlist,classname){
 
 
-				 return sb_core.dom.hasClass(classlist,classname);
+				 return dom.hasClass(classlist,classname);
 
 
 			},
@@ -249,7 +253,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_getStyles: function(element){
 
 
-				 return sb_core.dom.getStyles(element);
+				 return dom.getStyles(element);
 
 
 			},
@@ -257,7 +261,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_getAttributes: function(element){
 
 
-				 return sb_core.dom.getAttributes(element);
+				 return dom.getAttributes(element);
 
 
 			},
@@ -265,7 +269,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_getParent: function(child){
 
 
-				return sb_core.dom.getParent(child);
+				return dom.getParent(child);
 
 
 		   },
@@ -279,7 +283,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_addEvent: function(el,ev,handler){
 					
 					
-					sb_core.events.addEventHandler(el,ev,handler);
+					events.addEventHandler(el,ev,handler);
 
 
 
@@ -288,7 +292,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_removeEvent: function(el,ev,handler){
 					
 					
-					sb_core.events.addEventHandler(el,ev,handler);
+					events.addEventHandler(el,ev,handler);
 
 
 			},
@@ -297,7 +301,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_getEvent: function(ev){
 
 
-				return sb_core.events.getEvent(ev);
+				return events.getEvent(ev);
 
 
 			},// End of addEventHandler() method
@@ -305,7 +309,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_getTarget: function(ev){
 
 
-				return sb_core.events.getTarget(ev);
+				return events.getTarget(ev);
 
 
 			},// End of addEventHandler() method
@@ -314,7 +318,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_preventNormal: function(ev){
 					
 					
-					sb_core.events.preventNormal(ev);
+					events.preventNormal(ev);
 
 
 			},
@@ -322,7 +326,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_stopEventBubble: function(ev){
 					
 					
-				sb_core.events.stopEventBubble(ev);
+				events.stopEventBubble(ev);
 
 
 		},
@@ -339,7 +343,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_ajaxGet: function(url,data,success,failure,type){
 					
 					
-				sb_core.ajax.get(url,data,success,failure,type);
+				ajax.get(url,data,success,failure,type);
 
 
 
@@ -348,7 +352,7 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_ajaxPost: function(url,data,success,failure,type){
 					
 					
-				sb_core.ajax.post(url,data,success,failure,type);
+				ajax.post(url,data,success,failure,type);
 
 
 
@@ -390,13 +394,13 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 			sb_jsToJson: function(jsObject){
 
 
-				return sb_core.converts.jsToJson(jsObject);
+				return converts.jsToJson(jsObject);
 			},
 
 			sb_jsonToJs: function(json){
 
 				
-				return sb_core.converts.jsonToJs(json);
+				return converts.jsonToJs(json);
 			}
 
 
@@ -414,4 +418,6 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 	
 
 }// End of SANDBOX create() method
+
+export default SANDBOX
 

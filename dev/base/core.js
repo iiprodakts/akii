@@ -2,10 +2,10 @@
 
 
 
-function CORE(){
+function CORE(lib){
 
-
-
+   
+	this.SUKU = lib
 	this.modules = {};
 
 
@@ -25,7 +25,7 @@ CORE.prototype.createModule = function(module,moduleId,modInstId){
 
 
 
-		for(mod in modules){
+		for(let mod in modules){
 
 			//console.log(modules[mod]);
 
@@ -64,277 +64,283 @@ CORE.prototype.createModule = function(module,moduleId,modInstId){
 
 }// End of store modules method
 
-CORE.prototype.dom = {
+CORE.prototype.dom = function(){
 
+	const SUKU = this.SUKU
 
-	queryCont: function(contModId,contModInstId){
-
-			
-			var cont = {};
-			
+	return{
 
 			
-		
-			var modViews = SUKU.getAllBy_attribute(contModId);
 
-				for(var modV=0; modV < modViews.length; modV++){
+			queryCont: function(contModId,contModInstId){
 
-					 var attribs = SUKU.get_element_attributes(modViews[modV]);
+					
+					var cont = {};
+					
 
-
-					 if(attribs.length > 0){
-
-
-							for(var a=0; a < attribs.length; a++){
-
-								var attName = attribs[a].name;
-
-								if(attName === contModId){
-
-									var attValue = attribs[a].value;
-
-									if(attValue === contModInstId){
-
-
-										cont = modViews[modV];
-										break;
-									}
-								}
-
-							}
-
-						}// End of check attributes length if statement
-
-
-
-				}
-
-
-
+					
 				
-				cont.queryChildById = function(selector){
+					var modViews = SUKU.getAllBy_attribute(contModId);
+
+						for(var modV=0; modV < modViews.length; modV++){
+
+							var attribs = SUKU.get_element_attributes(modViews[modV]);
 
 
-						return SUKU.getChildby_id(this,selector);
+							if(attribs.length > 0){
 
 
+									for(var a=0; a < attribs.length; a++){
 
-				}
+										var attName = attribs[a].name;
 
-				cont.queryChildByClass = function(selector){
+										if(attName === contModId){
 
+											var attValue = attribs[a].value;
 
-						return SUKU.getChildby_class(this,selector);
-
-
-
-				}
-
-				cont.queryAllChildByClass = function(selector){
+											if(attValue === contModInstId){
 
 
-						return SUKU.getAllChildby_class(this,selector);
+												cont = modViews[modV];
+												break;
+											}
+										}
 
+									}
 
-
-				}
-
-				cont.queryChildByAttribute = function(attrib){
-
-
-						return SUKU.getChildby_attribute(this,attrib);
-
-
-
-				}
-
-				cont.queryAllChildByAttribute = function(attrib){
-
-
-						return SUKU.getAllChildby_attribute(this,attrib);
+								}// End of check attributes length if statement
 
 
 
-				}
+						}
 
 
+
+						
+						cont.queryChildById = function(selector){
+
+
+								return SUKU.getChildby_id(this,selector);
+
+
+
+						}
+
+						cont.queryChildByClass = function(selector){
+
+
+								return SUKU.getChildby_class(this,selector);
+
+
+
+						}
+
+						cont.queryAllChildByClass = function(selector){
+
+
+								return SUKU.getAllChildby_class(this,selector);
+
+
+
+						}
+
+						cont.queryChildByAttribute = function(attrib){
+
+
+								return SUKU.getChildby_attribute(this,attrib);
+
+
+
+						}
+
+						cont.queryAllChildByAttribute = function(attrib){
+
+
+								return SUKU.getAllChildby_attribute(this,attrib);
+
+
+
+						}
+
+
+
+					
+
+					return cont;
+
+
+
+			},// End of query container method
+
+
+			createElement: function(selector){
+
+				console.log('The value of this inside create element')
+			
+				var el = SUKU.create_element(selector);
+
+				return el;
+
+
+			},
+
+			copyDeep: function(el){
+
+
+				var el = SUKU.copy_deep(el);
+
+				return el;
+
+
+			},
+
+			copyShallow: function(el){
+
+
+				var el = SUKU.copy_shallow(el);
+
+				return el;
+
+
+			},
+
+
+			queryById: function(selector){
+
+
+					return SUKU.getby_id(selector);
+
+
+
+			},
+
+			queryByTag: function(parent,selector){
+
+
+				return SUKU.getby_tag(parent,selector);
+
+
+
+		},
+
+
+			queryByAttribute: function(attrib){
+
+
+				return SUKU.getAllBy_attribute(attrib)
+
+
+
+			},
+
+
+
+			queryNodeType: function(node){
+
+					var type_of_node = SUKU.get_type_of_node(node);
+
+					return type_of_node;
 
 			
 
-			return cont;
+			},
 
+			addProperty: function(el,attrib,attribValue){
 
 
-	},// End of query container method
+				SUKU.set_element_attribute(el,attrib,attribValue);
 
 
-	createElement: function(selector){
+			},
 
+			removeProperty: function(el,attrib){
 
-		var el = SUKU.create_element(selector);
+				SUKU.remove_element_attribute(el,attrib);
+			},
 
-		return el;
+			insertInner: function(el,content){
 
 
-	},
+				SUKU.insert_content_inner(el,content);
 
-	copyDeep: function(el){
 
+			},
 
-		var el = SUKU.copy_deep(el);
+			addChild: function(parent,child){
 
-		return el;
 
+				SUKU.append_child(parent,child);
 
-	},
 
-	copyShallow: function(el){
+			},
 
+			getClasses: function(element){
 
-		var el = SUKU.copy_shallow(el);
 
-		return el;
+				return SUKU.get_class_list(element);
 
 
-	},
+			},
 
+			addClass: function(classlist,classname){
 
-	queryById: function(selector){
 
+				SUKU.add_class(classlist,classname);
 
-			return SUKU.getby_id(selector);
 
+			},
 
+			removeClass: function(classlist,classname){
 
-	},
 
-	queryByTag: function(parent,selector){
+				SUKU.remove_class(classlist,classname);
 
 
-		return SUKU.getby_tag(parent,selector);
+			},
 
+			toggleClass: function(classlist,classname){
 
 
-},
+				SUKU.toggle_class(classlist,classname);
 
 
-	queryByAttribute: function(attrib){
+			},
 
+			hasClass: function(classlist,classname){
 
-		return SUKU.getAllBy_attribute(attrib)
 
+				return SUKU.has_class(classlist,classname);
 
 
-	},
+			},
 
+			getStyles: function(element){
 
 
-	queryNodeType: function(node){
+				return SUKU.get_computed_styles(element);
 
-			var type_of_node = SUKU.get_type_of_node(node);
 
-			return type_of_node;
+			},
 
-	
+			getAttributes: function(element){
 
-	},
 
-	addProperty: function(el,attrib,attribValue){
+				return SUKU.get_element_attributes(element);
 
 
-		SUKU.set_element_attribute(el,attrib,attribValue);
+			},
+			getParent: function(child){
 
 
-	},
+				return SUKU.get_parent(child);
 
-	removeProperty: function(el,attrib){
 
-		SUKU.remove_element_attribute(el,attrib);
-	},
+		}
 
-	insertInner: function(el,content){
 
 
-		SUKU.insert_content_inner(el,content);
 
-
-	},
-
-	addChild: function(parent,child){
-
-
-		SUKU.append_child(parent,child);
-
-
-	},
-
-	getClasses: function(element){
-
-
-		return SUKU.get_class_list(element);
-
-
-	},
-
-	addClass: function(classlist,classname){
-
-
-		 SUKU.add_class(classlist,classname);
-
-
-	},
-
-	removeClass: function(classlist,classname){
-
-
-		 SUKU.remove_class(classlist,classname);
-
-
-	},
-
-	toggleClass: function(classlist,classname){
-
-
-		 SUKU.toggle_class(classlist,classname);
-
-
-	},
-
-	hasClass: function(classlist,classname){
-
-
-		 return SUKU.has_class(classlist,classname);
-
-
-	},
-
-	getStyles: function(element){
-
-
-		 return SUKU.get_computed_styles(element);
-
-
-	},
-
-	getAttributes: function(element){
-
-
-		 return SUKU.get_element_attributes(element);
-
-
-	},
-	getParent: function(child){
-
-
-		return SUKU.get_parent(child);
-
-
-   }
-
-
-
-
-
+ }
 
 
 
@@ -345,59 +351,62 @@ CORE.prototype.dom = {
 
 }; // End of CORE DOM MANIPULATION object
 
-CORE.prototype.events = {
+CORE.prototype.events = function() {
+
+	   const SUKU = this.SUKU
+
+		return{
+
+				addEventHandler: function(el,ev,handler){
 
 
-			addEventHandler: function(el,ev,handler){
+					SUKU.ev_addHandler(el,ev,handler);
 
 
-				SUKU.ev_addHandler(el,ev,handler);
+				},// End of addEventHandler() method
+
+				removeEventHandler: function(el,ev,handler){
 
 
-			},// End of addEventHandler() method
-
-			removeEventHandler: function(el,ev,handler){
+					SUKU.ev_removeHandler(el,ev,handler);
 
 
-				SUKU.ev_removeHandler(el,ev,handler);
+				},// End of addEventHandler() method
+
+				getEvent: function(ev){
 
 
-			},// End of addEventHandler() method
-
-			getEvent: function(ev){
+					return SUKU.getEvent(ev);
 
 
-				return SUKU.getEvent(ev);
+				},// End of addEventHandler() method
+
+				getTarget: function(ev){
 
 
-			},// End of addEventHandler() method
-
-			getTarget: function(ev){
+					return SUKU.getTarget(ev);
 
 
-				return SUKU.getTarget(ev);
+				},// End of addEventHandler() method
+
+				preventNormal: function(ev){
 
 
-			},// End of addEventHandler() method
-
-			preventNormal: function(ev){
+					SUKU.preventDefault(ev);
 
 
-				SUKU.preventDefault(ev);
+				},// End of addEventHandler() method
+
+				stopEventBubble: function(ev){
 
 
-			},// End of addEventHandler() method
-
-			stopEventBubble: function(ev){
+					SUKU.stopPropagation(ev);
 
 
-				SUKU.stopPropagation(ev);
+				},// End of addEventHandler() method
 
 
-			},// End of addEventHandler() method
-
-
-
+		}
 
 
 
@@ -405,34 +414,37 @@ CORE.prototype.events = {
 
 
 
-CORE.prototype.ajax = {
+CORE.prototype.ajax = function() {
 
 
-			get: function(url,data,success,failure,type){
+	    const SUKU = this.SUKU
+		return {
 
-
-
-				SUKU.ajax_get(url,data,success,failure,type);
-
-
-
-			},// End of ajax get() method
-
-			post: function(url,data,success,failure,type){
+				get: function(url,data,success,failure,type){
 
 
 
-				SUKU.ajax_post(url,data,success,failure,type);
+					SUKU.ajax_get(url,data,success,failure,type);
 
 
 
-			},// End of ajax post() method
-		
-		
+				},// End of ajax get() method
+
+				post: function(url,data,success,failure,type){
 
 
 
-};// End of CORE AJAX manipulation object
+					SUKU.ajax_post(url,data,success,failure,type);
+
+
+
+				},// End of ajax post() method
+			
+			
+
+			}
+
+	};// End of CORE AJAX manipulation object
 
 
 
@@ -493,7 +505,7 @@ CORE.prototype.triggerEvent = function(evt){
 	if(evt){
 
 		// console.log('Event contains data')
-		for(moduId in this.modules){
+		for(let moduId in this.modules){
 
 			// console.log('Modules contains modules')
 
@@ -502,7 +514,7 @@ CORE.prototype.triggerEvent = function(evt){
 				// console.log('given module belongs to modules object')
 				moduId = this.modules[moduId];
 
-				for(modInst in moduId){
+				for(let modInst in moduId){
 
 					// console.log('Instances of a given moduleS')
 					// console.log(moduId[modInst].events.type)
@@ -552,11 +564,11 @@ CORE.prototype.startModule = function(moduleId,modInstId){
 CORE.prototype.startAllModules = function(){
 
 
-	for(modu in this.modules){
+	for(let modu in this.modules){
 
 		var modSuper = this.modules[mod];
 
-		for(modInstId in modSuper){
+		for(let modInstId in modSuper){
 
 
 
@@ -606,12 +618,12 @@ CORE.prototype.stopModule = function(moduleId,modInstId){
 CORE.prototype.stopAllModules = function(){
 
 
-	for(modu in this.modules){
+	for(let modu in this.modules){
 
 
 		var modSuper = this.modules[mod];
 
-		for(modInstId in modSuper){
+		for(let modInstId in modSuper){
 
 
 
@@ -644,21 +656,26 @@ CORE.prototype.stopAllModules = function(){
 
 
 
-CORE.prototype.converts = {
+CORE.prototype.converts = function(){
+
+		const SUKU = this.SUKU
+	
+		return {
+
+			jsToJson: function(jsObject){
 
 
-		jsToJson: function(jsObject){
+				return SUKU.js_to_json(jsObject);
+			},
+
+			jsonToJs: function(json){
 
 
-			return SUKU.js_to_json(jsObject);
-		},
+				return SUKU.json_to_js(json);
 
-		jsonToJs: function(json){
+			}
 
-
-			return SUKU.json_to_js(json);
-
-		}
+	}
 
 
 
@@ -667,8 +684,5 @@ CORE.prototype.converts = {
 
 
 
-
-
-
 	
-
+export default CORE;

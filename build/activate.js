@@ -1,93 +1,55 @@
 "use strict";
 
-var activator = function () {
-  return {
-    activate: function activate() {
-      // var pageModules = this.getPageModules(this.getCurrentPage(),this.getModules())
-      this.build([Requery, Messenger, Aka, Dom, List, Form, Home, Menu]);
-    },
-    getPageModules: function getPageModules(page, modules) {
-      for (modu in modules) {
-        if (modu === page) {
-          // console.log('The current page modules: '+ page)
-          // console.log(modules[modu])
-          return modules[modu];
-        }
-      }
-    },
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Activator = void 0;
 
-    /*getModules: function(){
-    			return {
-    
-    		app: [Preloader,Requery,Messenger,Component,Render,List,Cart,Navigata],
-    		dashboard: [Preloader,Requery,Messenger,Component,Render,List,Cart,Navigata,Logout],
-    		menulist: [Preloader,Requery,Messenger,Component,Render,List,Cart,Modal,Navigata],
-    		detail: [Preloader,Requery,Messenger,Component,Render,List,Accordion,Modal,Cart,Navigata],
-    		bargain: [Preloader,Requery,Messenger,Component,Render,Accordion,Modal,Cart,Navigata],
-    		settings: [Authenticator,Preloader,Requery,Messenger,Component,Render,Accordion,Modal,Cart,Navigata],
-    		register: [Requery,Messenger,Render,Register],
-    		login: [Requery,Messenger,Render,Login],
-    		uprofile: [Authenticator,Preloader,Requery,Messenger,Component,Render],
-    		kart: [Preloader,Requery,Messenger,Component,Render,Cart],
-    		checkout: [Authenticator,Preloader,Requery,Messenger,Component,Render,Cart],
-    		orderstatus: [Authenticator,Preloader,Requery,Messenger,Component,Render,List,Cart,Navigata]
-    					}
-    },
-    
-    
-    
-    
-    
-    getCurrentPage: function(){
-    
-    	return window.location.href.split('/').pop().split('.')[0]
-    },*/
-    build: function build(modulesList) {
-      var appCore = new CORE(),
-          appSandbox = new SANDBOX(appCore),
-          modulesList = modulesList;
+var Activator = function Activator(dependencies, libs) {
+  var core = new dependencies.CORE(dependencies.SUKU);
+  var sandbox = new dependencies.SANDBOX(core);
+  libs.forEach(function (lib) {
+    for (var moco in lib) {
+      console.log('Inside activate');
+      console.log(moco);
+      var moduId = moco.toLowerCase();
+      var v = dependencies.SUKU.getAllBy_attribute('data-' + moduId);
+      console.log("Currently executing module: ".concat(moco));
 
-      for (var modu = 0; modu < modulesList.length; ++modu) {
-        this.createInstances(appCore, appSandbox, modulesList, modu);
-      } // End of module existence test on a given context(page)*/
+      if (v.length > 0) {
+        console.log('Executing the module with view');
+        var attribs = dependencies.SUKU.get_element_attributes(v[0]);
+        var modInstId = '';
 
-    },
-    // End of build
-    createInstances: function createInstances(appCore, appSandbox, modulesList, modu) {
-      var moduId = modulesList[modu].name.toLowerCase();
-      var modulesObj = SUKU.getAllBy_attribute('data-' + moduId); // console.log('The modulesobject')
-      // console.log(modulesObj)			
+        if (attribs.length > 0) {
+          for (var a = 0; a < attribs.length; a++) {
+            var attName = attribs[a].name;
 
-      if (modulesObj.length !== 0) {
-        for (var mOb = 0; mOb < modulesObj.length; mOb++) {
-          var attribs = SUKU.get_element_attributes(modulesObj[mOb]);
-          var modInstId = '';
-
-          if (attribs.length > 0) {
-            for (var a = 0; a < attribs.length; a++) {
-              var attName = attribs[a].name;
-
-              if (attName === 'data-' + moduId) {
-                var attValue = attribs[a].value;
-                modInstId = attValue;
-                break;
-              }
+            if (attName === 'data-' + moduId) {
+              var attValue = attribs[a].value;
+              modInstId = attValue;
+              break;
             }
-          } // End of check attributes length if statement
+          }
+        } // End of check attributes length if statement
 
 
-          appCore.createModule(new modulesList[modu](appSandbox.create(moduId, modInstId)), moduId, modInstId);
-          appCore.startModule(moduId, modInstId);
-        } // End of loop through module instances
-
+        core.createModule(new lib[moco](sandbox.create(moduId, modInstId)), moduId, modInstId);
+        console.log("Currently starting module: ".concat(moco));
+        core.startModule(moduId, modInstId); // console.log('Dependicies')
+        // console.log(typeof dependencies.core)
+        // // let moduId = mod.name.toLowerCase();
       } else {
-        var modInstId = moduId;
+        var _modInstId = moduId;
         console.log('Executing module without view');
-        appCore.createModule(new modulesList[modu](appSandbox.create(moduId, null)), moduId, modInstId);
-        appCore.startModule(moduId, modInstId);
+        core.createModule(new lib[moco](sandbox.create(moduId, null)), moduId, _modInstId);
+        console.log("Currently starting module: ".concat(moco));
+        core.startModule(moduId, _modInstId); // console.log('Dependicies')
+        // console.log(typeof dependencies.core)
+        // // let moduId = mod.name.toLowerCase();
       }
-    } // End of createInstances
-    // End of return
+    }
+  });
+};
 
-  };
-}();
+exports.Activator = Activator;
