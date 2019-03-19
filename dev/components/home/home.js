@@ -24,6 +24,7 @@ class Home{
     this.evs = methods.evs
     this.functions = methods.functions
     this.build = methods.build
+    this.render = methods.render
    
 
   }

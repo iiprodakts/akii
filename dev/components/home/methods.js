@@ -1,6 +1,13 @@
 export const init = function(){
-	
-    this.listens() 
+    
+    var self = this
+    this.listens()
+    this.emit({type:'subscribe-to-store',data: {
+
+        component: 'home',
+        render: self.render
+
+    } }) 
     this.emit({type: 'connect-to-store',data:{
 
         component: 'home',
@@ -778,4 +785,9 @@ export const build = function(){
 
  }})
  
+}
+
+export const render = function(){
+
+    console.log('From the home component, I render on state change')
 }
