@@ -76,14 +76,53 @@ export const dispatch = function(data){
 	
 	const self = this
 
+	 for(let action in self.actions){
+
+			if(action.hasOwnProperty(data.component)){
+
+					self.action[data.component](data)
+					break;
+
+			}
+	 }
+
 	
 	
 }
 
-export const reducer = function(action,payload){
+export const reducer = function(data){
 	
 	const self = this
 
+	for(let reducer in self.reducers){
+
+		if(reducer.hasOwnProperty(data.component)){
+
+				self.reducers[data.component](data.component,data.payload)
+				break;
+
+		}
+ }
+	
+	
+}
+
+export const setState = function(component,data){
+	
+	const self = this
+
+	for(let contextState in self.state){
+
+		if(self.state.hasOwnProperty(component)){
+
+	
+				self.state[component] = data
+				this.events.emit('stateChange',component)
+				
+				break;
+
+		}
+ }
 	
 	
 }
