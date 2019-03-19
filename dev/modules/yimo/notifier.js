@@ -11,23 +11,22 @@ class Notifier{
   
   }
 
-  listen(evt,callback){
+  listen(evt,data){
 
-      
-     this.events[evt] = callback
-
-   
-
-
+     this.events[data.component][evt] = data.callback
   }
 
-  emit(evt,data = {}){
+  emit(evt,component,data = {}){
 
-     if(this.events.hasOwnProperty(evt)){
+    for(let evts in self.events){
 
-       this.events[evt](data)
-
-     }
+      if(self.events.hasOwnProperty(component)){
+  
+          self.events[component][evt](data)
+          break;
+  
+      }
+   }
 
   }
 
