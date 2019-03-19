@@ -1,6 +1,13 @@
 export const init = function(){
 	
     this.listens() 
+    this.emit({type: 'connect-to-store',data:{
+
+        component: 'home',
+        actions: this.actions,
+        reducers: this.reducers
+
+    }})
     this.build( ) 
    //  this.emit({type:'component-mount',data: this.build})
    //  this.emit({type:'get-component-name',data: ''})

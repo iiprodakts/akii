@@ -1,5 +1,7 @@
 
 import * as methods from "./methods"
+import * as actions from './actions'
+import * as reducers from './reducers'
 
 class Home{
   
@@ -7,6 +9,9 @@ class Home{
   constructor(sandbox){
 
     this.sb = sandbox
+    this.actions = actions
+    this.reducers = reducers
+
 
     // methods
 
