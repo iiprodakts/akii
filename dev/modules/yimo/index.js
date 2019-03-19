@@ -1,4 +1,4 @@
 
-import Yimo from "./yimo";
+import Yimo from "./store";
 
 export default Yimo
