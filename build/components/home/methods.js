@@ -3,10 +3,27 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.build = exports.functions = exports.evs = exports.messenger = exports.domTreeCreated = exports.handleDomTreeCreated = exports.emit = exports.listens = exports.init = void 0;
+exports.render = exports.build = exports.functions = exports.evs = exports.messenger = exports.domTreeCreated = exports.handleDomTreeCreated = exports.emit = exports.listens = exports.init = void 0;
 
 var init = function init() {
+  var self = this;
   this.listens();
+  this.emit({
+    type: 'subscribe-to-store',
+    data: {
+      event: 'STATE-CHANGE',
+      component: 'home',
+      callback: self.render
+    }
+  });
+  this.emit({
+    type: 'connect-to-store',
+    data: {
+      component: 'home',
+      actions: this.actions.testAction,
+      reducers: this.reducers.home
+    }
+  });
   this.build(); //  this.emit({type:'component-mount',data: this.build})
   //  this.emit({type:'get-component-name',data: ''})
 };
@@ -397,6 +414,13 @@ var build = function build() {
   //   console.log(funks)
 
   this.emit({
+    type: 'action-dispatch',
+    data: {
+      type: 'TEST_TYPE',
+      component: 'home'
+    }
+  });
+  this.emit({
     type: 'create-dom-tree',
     data: {
       article: {
@@ -508,3 +532,9 @@ var build = function build() {
 };
 
 exports.build = build;
+
+var render = function render() {
+  console.log('From the home component, I render on state change');
+};
+
+exports.render = render;

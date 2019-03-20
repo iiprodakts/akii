@@ -10,12 +10,12 @@ class Store{
 
     this.sb = sandbox 
     this.state = {}
-    this.events = {}
     this.actions = {}
     this.reducers = {}
-
-
-    this.events = notifier
+    this.evts = {}
+    this.evts[notifier.listen.name] = notifier.listen.bind(this)
+    this.evts[notifier.emit.name] = notifier.emit.bind(this)
+    this.evts.events = notifier.events
 
 
 
@@ -26,9 +26,14 @@ class Store{
      this.emit = methods.emit
      this.handleConnectToStore = methods.handleConnectToStore
      this.connectToStore = methods.connectToStore
+     this.handleSubscribeToStore = methods.handleSubscribeToStore
+     this.handleActionDispatch = methods.handleActionDispatch
+     this.actionDispatch = methods.actionDispatch
+     this.subscribeToStore = methods.subscribeToStore
      this.connect = methods.connect
      this.dispatch = methods.dispatch
-     this.reduce = methods.reduce
+     this.reducer = methods.reducer
+     this.setState = methods.setState
     // this.createBar = methods.createBar
     // this.createTitle = methods.createTitle
     // this.createController = methods.createController

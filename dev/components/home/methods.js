@@ -4,15 +4,16 @@ export const init = function(){
     this.listens()
     this.emit({type:'subscribe-to-store',data: {
 
+        event: 'STATE-CHANGE',
         component: 'home',
-        render: self.render
+        callback: self.render
 
     } }) 
     this.emit({type: 'connect-to-store',data:{
 
         component: 'home',
-        actions: this.actions,
-        reducers: this.reducers
+        actions: this.actions.testAction,
+        reducers: this.reducers.home
 
     }})
     this.build( ) 
@@ -609,7 +610,11 @@ export const build = function(){
 //   console.log(funks)
 
 
+this.emit({type: 'action-dispatch',data: {
 
+    type: 'TEST_TYPE',
+    component: 'home'
+}})
 
 
  this.emit({type:'create-dom-tree',data:{

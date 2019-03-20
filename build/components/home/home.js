@@ -7,6 +7,10 @@ exports.default = void 0;
 
 var methods = _interopRequireWildcard(require("./methods"));
 
+var actions = _interopRequireWildcard(require("./actions"));
+
+var reducers = _interopRequireWildcard(require("./reducers"));
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -14,7 +18,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Home = function Home(sandbox) {
   _classCallCheck(this, Home);
 
-  this.sb = sandbox; // methods
+  this.sb = sandbox;
+  this.actions = actions;
+  this.reducers = reducers; // methods
 
   this.init = methods.init;
   this.listens = methods.listens;
@@ -25,6 +31,7 @@ var Home = function Home(sandbox) {
   this.evs = methods.evs;
   this.functions = methods.functions;
   this.build = methods.build;
+  this.render = methods.render;
 };
 
 var _default = Home;

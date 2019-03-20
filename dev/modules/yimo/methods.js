@@ -17,8 +17,9 @@ export const listens = function(){
   
 	sb.sb_notifyListen({
 		
-		//  'store-notify-listen': this.handleStoreNotifyListen.bind(this),
-		 'connect-to-store': this.handleConnectToStore.bind(this)
+		  'subscribe-to-store': this.handleSubscribeToStore.bind(this),
+		 'connect-to-store': this.handleConnectToStore.bind(this),
+		 'action-dispatch': this.handleActionDispatch.bind(this)
 		//  'action-dispatch': this.handleActionDispatch.bind(this)
 		 
 	},sb.moduleMeta.moduleId,sb.moduleMeta.modInstId)
@@ -78,10 +79,23 @@ export const dispatch = function(data){
 
 	 for(let action in self.actions){
 
-			if(action.hasOwnProperty(data.component)){
+			if(self.actions.hasOwnProperty(data.component)){
 
-					self.action[data.component](data)
-					break;
+					console.log('THe dispatch contains component')
+
+				 for(let ac in self.actions[data.component]){
+
+				  	console.log('The ')
+						if(self.actions[data.component].hasOwnProperty('type') && self.actions[data.component]['type'] === data.type){
+
+							console.log('The thing gets here')
+
+							self.actions[data.component]['action'](self)
+							break
+						}
+
+				 }
+				
 
 			}
 	 }
@@ -96,10 +110,23 @@ export const reducer = function(data){
 
 	for(let reducer in self.reducers){
 
-		if(reducer.hasOwnProperty(data.component)){
+		if(self.reducers.hasOwnProperty(data.component)){
 
-				self.reducers[data.component](data.component,data.payload)
-				break;
+				console.log('THe dispatch contains component')
+
+			 for(let re in self.reducers[data.component]){
+
+					console.log('The reducer runs ')
+					if(self.reducers[data.component].hasOwnProperty('type') && self.reducers[data.component]['type'] === data.type){
+
+						console.log('The thing gets here IN THE REDUCER')
+
+						self.reducers[data.component]['reducer'](self,{component: data.component,payload:data.payload,type: data.type})
+						break
+					}
+
+			 }
+			
 
 		}
  }
@@ -109,23 +136,56 @@ export const reducer = function(data){
 
 export const setState = function(component,data){
 	
+	console.log('THE SET STATE FUNCTION HAS BEEN INVOKED')
 	const self = this
 
-	for(let contextState in self.state){
 
-		if(self.state.hasOwnProperty(component)){
+	if(Object.keys(self.state).length > 0){
 
+
+		const keys = Object.keys(self.state)
 	
-				self.state[component] = data
-				this.events.emit('stateChange',component)
+		console.log('The setState Runs')
+		console.log(keys)
+
+		for(let k = 0; k < keys.length; k++){
+
+
+			console.log('THE SETSTATE FOR LOOP')
+			if(self.state.hasOwnProperty(component)){
+		
+					console.log('THe component state exist')
+					self.state[component] = Object.assign(self.state[component],data)
+					self.evts.emit('stateChange',component)
+					
+					break;
+	
+			}else if(k === keys.length - 1){
+	
+				console.log('TEH COMPONENT STATE DOES NOT EXIST,SET IT')
+				self.state[component] = Object.assign(self.state[component],data)
+				self.evts.emit('stateChange',component)
 				
 				break;
+	
+			}
+	 }
 
-		}
- }
+	}else{
+
+
+				console.log('TEH COMPONENT STATE DOES NOT EXIST,SET IT')
+				self.state[component] = data
+				self.evts.emit('stateChange',component)
+				
+
+	}
+	
 	
 	
 }
+
+
 
 export const handleConnectToStore = function(data){
 
@@ -142,3 +202,39 @@ export const connectToStore = function(data){
 	this.connect(data)
 
 }
+
+export const handleSubscribeToStore = function(data){
+
+	console.log('HANDLE Subscribe to store event has occured')
+	this.subscribeToStore(data)
+	
+}
+
+export const subscribeToStore = function(data){
+
+	const self = this
+	console.log('Subscribe to store data')
+	console.log(data)
+	console.log(self.state)
+	console.log(self.evts)
+	self.evts.listen(data.event,data)
+
+}
+
+export const handleActionDispatch = function(data){
+
+	console.log('HANDLE Subscribe to store event has occured')
+	this.actionDispatch(data)
+	
+}
+
+export const actionDispatch = function(data){
+
+	const self = this
+	console.log('Subscribe to store data')
+	console.log(data)
+
+	self.dispatch(data)
+
+}
+

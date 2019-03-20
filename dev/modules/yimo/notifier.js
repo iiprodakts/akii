@@ -13,16 +13,28 @@ class Notifier{
 
   listen(evt,data){
 
-     this.events[data.component][evt] = data.callback
+     self = this
+     console.log(`Event: ${evt} has been subscribed, and the data is: ${data}`)
+     console.log(data)
+     console.log(self.evts.events)
+     console.log(data.component)
+
+     let comp = {
+       callback: data.callback,
+       type: evt
+     }
+     self.evts.events[data.component] = comp
   }
 
   emit(evt,component,data = {}){
 
-    for(let evts in self.events){
+    console.log('Hi, I am the emit on state change')
+    for(let evts in self.evts.events){
 
-      if(self.events.hasOwnProperty(component)){
+      if(self.evts.events.hasOwnProperty(component)){
   
-          self.events[component][evt](data)
+          self.evts.events[component]['callback'](data)
+          console.log(self.state)
           break;
   
       }
