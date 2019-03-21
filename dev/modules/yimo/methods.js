@@ -9,7 +9,6 @@ export const init = function(){
 	
 }
 
-
 export const listens = function(){
 	
   var sb = this.sb 
@@ -49,8 +48,31 @@ export const connect = function(data){
 
 			if(data.hasOwnProperty('reducers')){
 
-				self.actions[data.component] = data.actions
-				self.reducers[data.component] = data.reducers
+				self.actions[data.component] = {}
+				self.reducers[data.component] = {}
+
+				for(let d in data){
+
+					if(d !== 'component'){
+
+							console.log(d)
+							console.log(data[d])
+
+							console.log('Actions type')
+							console.log(typeof data[d])
+							console.log(data[d] instanceof Array)
+						
+							data[d].forEach( i => {
+								
+							 self[d][data.component] = Object.assign(self[d][data.component],i) 
+
+							});
+					}
+
+					
+
+				}
+			
 
 				console.log('The current reducers and actions')
 				console.log(self.actions)
@@ -121,6 +143,8 @@ export const reducer = function(data){
 
 						console.log('The thing gets here IN THE REDUCER')
 
+						console.log('THe current component reducer')
+						console.log(self.reducers[data.component])
 						self.reducers[data.component]['reducer'](self,{component: data.component,payload:data.payload,type: data.type})
 						break
 					}
@@ -184,8 +208,6 @@ export const setState = function(component,data){
 	
 	
 }
-
-
 
 export const handleConnectToStore = function(data){
 

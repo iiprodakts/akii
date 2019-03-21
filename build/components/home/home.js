@@ -7,9 +7,11 @@ exports.default = void 0;
 
 var methods = _interopRequireWildcard(require("./methods"));
 
-var actions = _interopRequireWildcard(require("./actions"));
+var _actions = _interopRequireDefault(require("./actions"));
 
-var reducers = _interopRequireWildcard(require("./reducers"));
+var _reducers = _interopRequireDefault(require("./reducers"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -19,8 +21,8 @@ var Home = function Home(sandbox) {
   _classCallCheck(this, Home);
 
   this.sb = sandbox;
-  this.actions = actions;
-  this.reducers = reducers; // methods
+  this.actions = _actions.default;
+  this.reducers = _reducers.default; // methods
 
   this.init = methods.init;
   this.listens = methods.listens;

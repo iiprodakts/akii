@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.actionDispatch = exports.handleActionDispatch = exports.subscribeToStore = exports.handleSubscribeToStore = exports.connectToStore = exports.handleConnectToStore = exports.setState = exports.reducer = exports.dispatch = exports.connect = exports.emit = exports.listens = exports.init = void 0;
 
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 var init = function init() {
   console.log('Store has been initialised');
   this.listens();
@@ -40,8 +42,26 @@ var connect = function connect(data) {
   if (data.hasOwnProperty('component')) {
     if (data.hasOwnProperty('actions')) {
       if (data.hasOwnProperty('reducers')) {
-        self.actions[data.component] = data.actions;
-        self.reducers[data.component] = data.reducers;
+        self.actions[data.component] = {};
+        self.reducers[data.component] = {};
+
+        var _loop = function _loop(d) {
+          if (d !== 'component') {
+            console.log(d);
+            console.log(data[d]);
+            console.log('Actions type');
+            console.log(_typeof(data[d]));
+            console.log(data[d] instanceof Array);
+            data[d].forEach(function (i) {
+              self[d][data.component] = Object.assign(self[d][data.component], i);
+            });
+          }
+        };
+
+        for (var d in data) {
+          _loop(d);
+        }
+
         console.log('The current reducers and actions');
         console.log(self.actions);
         console.log(self.reducers);
@@ -92,6 +112,8 @@ var reducer = function reducer(data) {
 
         if (self.reducers[data.component].hasOwnProperty('type') && self.reducers[data.component]['type'] === data.type) {
           console.log('The thing gets here IN THE REDUCER');
+          console.log('THe current component reducer');
+          console.log(self.reducers[data.component]);
           self.reducers[data.component]['reducer'](self, {
             component: data.component,
             payload: data.payload,

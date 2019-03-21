@@ -20,8 +20,8 @@ var init = function init() {
     type: 'connect-to-store',
     data: {
       component: 'home',
-      actions: this.actions.testAction,
-      reducers: this.reducers.home
+      actions: this.actions,
+      reducers: this.reducers
     }
   });
   this.build(); //  this.emit({type:'component-mount',data: this.build})
