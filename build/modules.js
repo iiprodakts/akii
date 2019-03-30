@@ -10,15 +10,18 @@ var _index4 = _interopRequireDefault(require("./modules/list/index"));
 
 var _index5 = _interopRequireDefault(require("./modules/dom/index"));
 
-var _index6 = _interopRequireDefault(require("./modules/form/index"));
+var _index6 = _interopRequireDefault(require("./modules/vd/index"));
+
+var _index7 = _interopRequireDefault(require("./modules/form/index"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 module.exports = {
   Yimo: _index.default,
+  Vd: _index6.default,
   Accordion: _index2.default,
   Aka: _index3.default,
   List: _index4.default,
   Dom: _index5.default,
-  Form: _index6.default
+  Form: _index7.default
 };

@@ -17,7 +17,7 @@ var Activator = function Activator(dependencies, libs) {
       console.log("Currently executing module: ".concat(moco));
 
       if (v.length > 0) {
-        console.log('Executing the module with view');
+        // console.log('Executing the module with view')
         var attribs = dependencies.SUKU.get_element_attributes(v[0]);
         var modInstId = '';
 
@@ -40,8 +40,8 @@ var Activator = function Activator(dependencies, libs) {
         // console.log(typeof dependencies.core)
         // // let moduId = mod.name.toLowerCase();
       } else {
-        var _modInstId = moduId;
-        console.log('Executing module without view');
+        var _modInstId = moduId; // console.log('Executing module without view')
+
         core.createModule(new lib[moco](sandbox.create(moduId, null)), moduId, _modInstId);
         console.log("Currently starting module: ".concat(moco));
         core.startModule(moduId, _modInstId); // console.log('Dependicies')

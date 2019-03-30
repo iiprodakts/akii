@@ -13,8 +13,7 @@ export const listens = function(){
    sb.sb_notifyListen({
 	   
 		'add-dom-component' : this.handleAddDomComponent.bind(this)
-   
-	   
+
    },sb.moduleMeta.moduleId,sb.moduleMeta.modInstId)
 }
 
@@ -35,9 +34,9 @@ export const emit = function(eNotifs){
 export const handleAddDomComponent = function(data){
    
    var sb = this.sb 
-   console.log('The Dom View')
-   console.log(sb)
-   console.log(sb.view)
+   // console.log('The Dom View')
+   // console.log(sb)
+   // console.log(sb.view)
    console.log('The Dom Child View')
    console.log(data)
    sb.sb_addChild(sb.view,data)

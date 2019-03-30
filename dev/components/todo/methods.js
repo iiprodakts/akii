@@ -1,23 +1,31 @@
 export const init = function(){
     
     var self = this
+
+    // console.log('The list')
+    // console.log(this.list)
+    // this.list.build(self)
     this.listens()
     this.emit({type:'subscribe-to-store',data: {
 
         event: 'STATE-CHANGE',
-        component: 'home',
-        callback: self.render
+        component: 'todo',
+        initState: {list: {
+
+            items: this.children[0].initState.items
+        }},
+        callback: self.build.bind(self)
 
     } }) 
     this.emit({type: 'connect-to-store',data:{
 
-        component: 'home',
+        component: 'todo',
         actions: this.actions,
-        reducers: this.reducers
+        reducer: this.reducer
 
     }})
-    
-    this.build( ) 
+
+   
    //  this.emit({type:'component-mount',data: this.build})
    //  this.emit({type:'get-component-name',data: ''})
     
@@ -72,7 +80,9 @@ export const handleDomTreeCreated = function(data){
 
 export const domTreeCreated = function(data){
 
-   this.emit({type:'add-dom-component',data:data})
+    const self = this
+    this.emit({type: 'add-domto-vd',data:{data:data,id: self.constructor.name }})
+    
 }
 
 export const messenger = function(data){
@@ -598,8 +608,20 @@ export const functions = function(){
    
 }
 
-export const build = function(){
+export const build = function(state){
 
+
+    console.log('The initial state')
+    console.log(state)
+    console.log(this)
+
+    this.trunk = this.createTrunk()
+
+    this.children.forEach((child)=>{
+
+        child.build(state)
+
+    })
 //   var that = o;
 
 //   console.log('The value of that')
@@ -611,189 +633,217 @@ export const build = function(){
 //   console.log(funks)
 
 
-this.emit({type: 'action-dispatch',data: {
+// this.emit({type: 'action-dispatch',data: {
 
-    type: 'TEST_TYPE',
-    component: 'home'
-}})
+//     type: 'SET_TYPE',
+//     component: 'todo'
+// }})
+
+// this.emit({type: 'action-dispatch',data: {
+
+//     type: 'TEST_TYPE',
+//     component: 'todo'
+// }})
 
 
- this.emit({type:'create-dom-tree',data:{
 
-       article:{
+
+//  this.emit({type:'create-dom-tree',data:{
+
+//        article:{
            
           
-           props: {
+//            props: {
 
-               presentational:{
+//                presentational:{
 
-                   set:true,
-                   presents:{
+//                    set:true,
+//                    presents:{
 
-                   class: "login-content",
-                   id: "test-id"
+//                    class: "login-content",
+//                    id: "test-id"
 
-                   }
-               },
-               functional:{
+//                    }
+//                },
+//                functional:{
 
-                   set: false,
+//                    set: false,
 
-               }
+//                }
               
-           },
-           children:[
+//            },
+//            children:[
 
-               {
+//                {
 
-                   element: 'section',
-                   props: {
+//                    element: 'section',
+//                    props: {
 
-                       presentational: {
-                           set: true,
-                           presents: {
-                               class: "app__brand",
+//                        presentational: {
+//                            set: true,
+//                            presents: {
+//                                class: "app__brand",
                               
-                           }
-                      },
+//                            }
+//                       },
 
-                      functional:{
+//                       functional:{
 
-                       set: false
+//                        set: false
                        
-                      }
-                   },
-                   children:[
+//                       }
+//                    },
+//                    children:[
 
-                       {
-                           element: 'figure',
-                           props:{
-                               presentational:{
+//                        {
+//                            element: 'figure',
+//                            props:{
+//                                presentational:{
 
-                                   set: true,
-                                   presents: {
-                                       class: "app__brand--logo"
+//                                    set: true,
+//                                    presents: {
+//                                        class: "app__brand--logo"
                                    
-                                   }
+//                                    }
 
-                               },
-                               functional:{
+//                                },
+//                                functional:{
 
-                                   set: false
+//                                    set: false
 
-                               }
-                           },
-                           children:[
+//                                }
+//                            },
+//                            children:[
 
-                               {
-                                   element: 'img',
-                                   props:{
-                                       presentational:{
+//                                {
+//                                    element: 'img',
+//                                    props:{
+//                                        presentational:{
 
-                                           set: true,
-                                           presents: {
-                                               src: "img/ssmarfoc.png"
-                                           }
+//                                            set: true,
+//                                            presents: {
+//                                                src: "img/ssmarfoc.png"
+//                                            }
 
-                                       },
-                                       functional:{
+//                                        },
+//                                        functional:{
                                        
-                                           set: false
+//                                            set: false
 
-                                       }
-                                   }
-                               }
+//                                        }
+//                                    }
+//                                }
 
-                           ]
-                       },
+//                            ]
+//                        },
 
-                       {
-                           element: 'p',
-                           props:{
-                               presentational:{
+//                        {
+//                            element: 'p',
+//                            props:{
+//                                presentational:{
 
-                                   set: true,
-                                   presents: {
-                                       class: "app__brand--name",
-                                       content: 'Smarfo'
-                                   }
+//                                    set: true,
+//                                    presents: {
+//                                        class: "app__brand--name",
+//                                        content: 'Smarfo'
+//                                    }
 
-                               },
-                               functional:{
+//                                },
+//                                functional:{
 
-                                   set: false
-                               }
+//                                    set: false
+//                                }
 
-                           }
+//                            }
 
-                       }
-                   ]
-               },
-               {
+//                        }
+//                    ]
+//                },
+//                {
 
-                   element: 'section',
-                   props: {
+//                    element: 'section',
+//                    props: {
 
-                       presentational: {
-                           set: true,
-                           presents: {
-                               class: "login"
+//                        presentational: {
+//                            set: true,
+//                            presents: {
+//                                class: "login"
                               
-                           }
-                      },
+//                            }
+//                       },
 
-                      functional:{
+//                       functional:{
 
-                       set: false
+//                        set: false
                        
-                      }
-                   },
-                   children:[
+//                       }
+//                    },
+//                    children:[
 
-                       {
-                           element: 'form',
-                           props:{
-                               presentational:{
+//                        {
+//                            element: 'form',
+//                            props:{
+//                                presentational:{
 
-                                   set: true,
-                                   presents: {
-                                       class: "form",
-                                       id: 'login-data',
+//                                    set: true,
+//                                    presents: {
+//                                        class: "form",
+//                                        id: 'login-data',
                                        
-                                   }
+//                                    }
 
-                               },
-                               functional:{
+//                                },
+//                                functional:{
 
-                                   set: true,
-                                   meta:{
+//                                    set: true,
+//                                    meta:{
 
-                                     emit: {
-                                         type: 'create-form',
-                                         data: this.functions().form(evs)
-                                     }
+//                                      emit: {
+//                                          type: 'create-form',
+//                                          data: this.functions().form(evs)
+//                                      }
 
-                                   }
+//                                    }
 
-                               }
-                           }
+//                                }
+//                            }
               
-                       }
+//                        }
 
                      
-                   ]
-               }
+//                    ]
+//                }
 
-           ]
+//            ]
 
-       }
+//        }
 
 
- }})
+//  }})
  
 }
 
-export const render = function(){
+export const render = function(state){
 
-    console.log('From the home component, I render on state change')
+    console.log('From the TODO component, I render on state change')
+    
+    if(state){
+        console.log('The State inside the render method')
+        console.log(state)
+    }
+}
+
+export const createTrunk = function(){
+
+    const sb = this.sb
+
+    const trunk = sb.sb_createElement('main')
+
+    sb.sb_addProperty(trunk,'id',this.constructor.name.toLowerCase())
+    sb.sb_addProperty(trunk,'class','component-view')
+
+    return trunk
+
+    
+
 }

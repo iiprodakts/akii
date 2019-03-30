@@ -1,6 +1,6 @@
 
 import * as methods from "./methods"
-import notifier from './notifier'
+// import notifier from './notifier'
 
 
 class Store{
@@ -12,14 +12,18 @@ class Store{
     this.state = {}
     this.actions = {}
     this.reducers = {}
-    this.evts = {}
-    this.evts[notifier.listen.name] = notifier.listen.bind(this)
-    this.evts[notifier.emit.name] = notifier.emit.bind(this)
-    this.evts.events = notifier.events
+    this.supub = {}
+  
+    // console.log('THE STORE')
+    // console.log(this.supub)
+    // console.log('THE STORE STATE PROPERTY')
+    // console.log(this.state)
 
 
 
     // // methods
+
+   
 
      this.init = methods.init
      this.listens = methods.listens
@@ -34,12 +38,14 @@ class Store{
      this.dispatch = methods.dispatch
      this.reducer = methods.reducer
      this.setState = methods.setState
-    // this.createBar = methods.createBar
-    // this.createTitle = methods.createTitle
-    // this.createController = methods.createController
-    // this.handleCreateAccordion = methods.handleCreateAccordion
-    // this.createAccordion = methods.createAccordion
-    // this.expand = methods.expand
+     this.supubListen = methods.supubListen,
+     this.supubEmit = methods.supubEmit
+     this.initState = methods.initState
+
+    //  console.log('The state property at the beginning')
+    //  console.log(this.state)
+    //  console.log(this.supub)
+    
 
   }
 

@@ -10,7 +10,7 @@ export const init = function(){
 export const listens = function(){
 	
 	var sb = this.sb 
-	console.log('AKA LISTENS TO THE CREATE DOM TREE EVENT')
+	// console.log('AKA LISTENS TO THE CREATE DOM TREE EVENT')
 	sb.sb_notifyListen({
 		
 		 'create-dom-tree' : this.handleCreateDomTree.bind(this),
@@ -40,7 +40,7 @@ export const emit = function(eNotifs){
 export const handleCreateDomTree = function(data){
 	
 	var sb = this.sb
-	console.log('The Create Dom TREE EVENT IS CAUGHT')
+	// console.log('The Create Dom TREE EVENT IS CAUGHT')
 	this.createDomTree(data)
 	
 	
@@ -50,29 +50,36 @@ export const createDomTree = function(data){
 	  
 	  
 	//   var dom = null
-	  
-	  console.log('The data structure object')
-	  console.log(data)
-	  console.log(Object.keys(data))
-	  var rootName = Object.keys(data)[0]
-	  console.log(rootName)
+
+	const sb = this.sb
+	var trunk = data.trunk
+	var rootName = Object.keys(data)[1]
+	var branch = data[rootName].name
+	var custom = `data-${trunk.id.toLowerCase()}`
+	// var dataChildCustom = `${dataParentCustom}-${branch.toLowerCase()}`
+
+	// console.log('Data custom parent')
+	// console.log(`${dataParentCustom}`)
+	// console.log('Data branch thing')
+	// console.log(`${dataChildCustom}`)
+	// console.log(branch)
+	//   console.log(rootName)
 
 	  var root = this.create(rootName,data[rootName].props.presentational,data[rootName].props.functional)
 	  var children = this.createChildren(root,data[rootName].children)
 	  var root = this.addChildren(root,children)
+	   sb.sb_addChild(trunk,root)
 	//   var root = this.addChildren(root,children)
 
 
-
-	  this.domTreeCreated(root)
+	   this.domTreeCreated({trunk: trunk,branch: branch})
 
 }
 
-
 export const create = function(name,props,ops){
 
-	console.log('Create')
-	console.log(props)
+	// console.log('Create')
+	// console.log(props)
 	var sb = this.sb  
 	var el = this.addProps(this.addOps(sb.sb_createElement(name),ops),props)
 	//  var el = this.addProps(el,props.presentational)
@@ -94,8 +101,8 @@ export const createChildren = function(root,children){
 	for(let c=0; c < children.length; c++){
 
 		var e = children[c]
-		console.log('The current child props property')
-		console.log(e.props)
+		// console.log('The current child props property')
+		// console.log(e.props)
 		var el = this.create(e.element,e.props.presentational,e.props.functional)
 
 		if(e.children){
@@ -144,9 +151,9 @@ export const addProps = function(el,props){
 	  
 	var sb = this.sb
 
-	console.log('ADD PROPS')
-	console.log(props)
-	console.log(el)
+	// console.log('ADD PROPS')
+	// console.log(props)
+	// console.log(el)
 	
 	if(props.set){
 
@@ -175,9 +182,9 @@ export const addOps = function(el,ops){
 	  
 	var sb = this.sb
 
-	console.log('ADD OPS')
-	console.log(ops)
-	console.log(el)
+	// console.log('ADD OPS')
+	// console.log(ops)
+	// console.log(el)
 	
 	if(ops.set){
 
@@ -185,9 +192,22 @@ export const addOps = function(el,ops){
 
 			if(p === 'emit'){
 
-				console.log('The data of emit property')
-				console.log(ops.meta[p])
-				this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data}})
+				// console.log('The data of emit property')
+				// console.log(ops.meta[p])
+				if(ops.meta[p].hasOwnProperty('style')){
+
+					console.log('The style string')
+					let style = ops.meta[p].style
+					console.log(style)
+
+					this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data,style: style}})
+
+				}else{
+
+					this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data}})
+
+				}
+				
 			}
 
 			

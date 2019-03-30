@@ -6,25 +6,32 @@ Object.defineProperty(exports, "__esModule", {
 exports.createTrunk = exports.render = exports.build = exports.functions = exports.evs = exports.messenger = exports.domTreeCreated = exports.handleDomTreeCreated = exports.emit = exports.listens = exports.init = void 0;
 
 var init = function init() {
-  var self = this;
+  var self = this; // console.log('The list')
+  // console.log(this.list)
+  // this.list.build(self)
+
   this.listens();
   this.emit({
     type: 'subscribe-to-store',
     data: {
       event: 'STATE-CHANGE',
-      component: 'home',
-      callback: self.render
+      component: 'todo',
+      initState: {
+        list: {
+          items: this.children[0].initState.items
+        }
+      },
+      callback: self.build.bind(self)
     }
   });
   this.emit({
     type: 'connect-to-store',
     data: {
-      component: 'home',
+      component: 'todo',
       actions: this.actions,
       reducer: this.reducer
     }
-  });
-  this.build(); //  this.emit({type:'component-mount',data: this.build})
+  }); //  this.emit({type:'component-mount',data: this.build})
   //  this.emit({type:'get-component-name',data: ''})
 };
 
@@ -409,141 +416,155 @@ var functions = function functions() {
 
 exports.functions = functions;
 
-var build = function build() {
-  //   var that = o;
+var build = function build(state) {
+  console.log('The initial state');
+  console.log(state);
+  console.log(this);
+  this.trunk = this.createTrunk();
+  this.children.forEach(function (child) {
+    child.build(state);
+  }); //   var that = o;
   //   console.log('The value of that')
   //   console.log(o)
-  var evs = this.evs();
-  var self = this; //   var funks = this.functions()
+
+  var evs = this.evs(); //   var funks = this.functions()
   //   console.log('The emit')
   //   console.log(funks)
-
-  this.trunk = this.createTrunk();
-  var name = this.constructor.name;
-  this.emit({
-    type: 'action-dispatch',
-    data: {
-      type: 'TEST_TYPE',
-      component: 'home'
-    }
-  });
-  this.emit({
-    type: 'create-dom-tree',
-    data: {
-      trunk: self.trunk,
-      main: {
-        name: name,
-        props: {
-          presentational: {
-            set: true,
-            presents: {
-              class: "login-content",
-              id: "test-id"
-            }
-          },
-          functional: {
-            set: false
-          }
-        },
-        children: [{
-          element: 'section',
-          props: {
-            presentational: {
-              set: true,
-              presents: {
-                class: "app__brand"
-              }
-            },
-            functional: {
-              set: false
-            }
-          },
-          children: [{
-            element: 'figure',
-            props: {
-              presentational: {
-                set: true,
-                presents: {
-                  class: "app__brand--logo"
-                }
-              },
-              functional: {
-                set: false
-              }
-            },
-            children: [{
-              element: 'img',
-              props: {
-                presentational: {
-                  set: true,
-                  presents: {
-                    src: "img/ssmarfoc.png"
-                  }
-                },
-                functional: {
-                  set: false
-                }
-              }
-            }]
-          }, {
-            element: 'p',
-            props: {
-              presentational: {
-                set: true,
-                presents: {
-                  class: "app__brand--name",
-                  content: 'Smarfo'
-                }
-              },
-              functional: {
-                set: false
-              }
-            }
-          }]
-        }, {
-          element: 'section',
-          props: {
-            presentational: {
-              set: true,
-              presents: {
-                class: "login"
-              }
-            },
-            functional: {
-              set: false
-            }
-          },
-          children: [{
-            element: 'form',
-            props: {
-              presentational: {
-                set: true,
-                presents: {
-                  class: "form",
-                  id: 'login-data'
-                }
-              },
-              functional: {
-                set: true,
-                meta: {
-                  emit: {
-                    type: 'create-form',
-                    data: this.functions().form(evs)
-                  }
-                }
-              }
-            }
-          }]
-        }]
-      }
-    }
-  });
+  // this.emit({type: 'action-dispatch',data: {
+  //     type: 'SET_TYPE',
+  //     component: 'todo'
+  // }})
+  // this.emit({type: 'action-dispatch',data: {
+  //     type: 'TEST_TYPE',
+  //     component: 'todo'
+  // }})
+  //  this.emit({type:'create-dom-tree',data:{
+  //        article:{
+  //            props: {
+  //                presentational:{
+  //                    set:true,
+  //                    presents:{
+  //                    class: "login-content",
+  //                    id: "test-id"
+  //                    }
+  //                },
+  //                functional:{
+  //                    set: false,
+  //                }
+  //            },
+  //            children:[
+  //                {
+  //                    element: 'section',
+  //                    props: {
+  //                        presentational: {
+  //                            set: true,
+  //                            presents: {
+  //                                class: "app__brand",
+  //                            }
+  //                       },
+  //                       functional:{
+  //                        set: false
+  //                       }
+  //                    },
+  //                    children:[
+  //                        {
+  //                            element: 'figure',
+  //                            props:{
+  //                                presentational:{
+  //                                    set: true,
+  //                                    presents: {
+  //                                        class: "app__brand--logo"
+  //                                    }
+  //                                },
+  //                                functional:{
+  //                                    set: false
+  //                                }
+  //                            },
+  //                            children:[
+  //                                {
+  //                                    element: 'img',
+  //                                    props:{
+  //                                        presentational:{
+  //                                            set: true,
+  //                                            presents: {
+  //                                                src: "img/ssmarfoc.png"
+  //                                            }
+  //                                        },
+  //                                        functional:{
+  //                                            set: false
+  //                                        }
+  //                                    }
+  //                                }
+  //                            ]
+  //                        },
+  //                        {
+  //                            element: 'p',
+  //                            props:{
+  //                                presentational:{
+  //                                    set: true,
+  //                                    presents: {
+  //                                        class: "app__brand--name",
+  //                                        content: 'Smarfo'
+  //                                    }
+  //                                },
+  //                                functional:{
+  //                                    set: false
+  //                                }
+  //                            }
+  //                        }
+  //                    ]
+  //                },
+  //                {
+  //                    element: 'section',
+  //                    props: {
+  //                        presentational: {
+  //                            set: true,
+  //                            presents: {
+  //                                class: "login"
+  //                            }
+  //                       },
+  //                       functional:{
+  //                        set: false
+  //                       }
+  //                    },
+  //                    children:[
+  //                        {
+  //                            element: 'form',
+  //                            props:{
+  //                                presentational:{
+  //                                    set: true,
+  //                                    presents: {
+  //                                        class: "form",
+  //                                        id: 'login-data',
+  //                                    }
+  //                                },
+  //                                functional:{
+  //                                    set: true,
+  //                                    meta:{
+  //                                      emit: {
+  //                                          type: 'create-form',
+  //                                          data: this.functions().form(evs)
+  //                                      }
+  //                                    }
+  //                                }
+  //                            }
+  //                        }
+  //                    ]
+  //                }
+  //            ]
+  //        }
+  //  }})
 };
 
 exports.build = build;
 
-var render = function render() {
-  console.log('From the home component, I render on state change');
+var render = function render(state) {
+  console.log('From the TODO component, I render on state change');
+
+  if (state) {
+    console.log('The State inside the render method');
+    console.log(state);
+  }
 };
 
 exports.render = render;

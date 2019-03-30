@@ -17,8 +17,8 @@ CORE.prototype.createModule = function(module,moduleId,modInstId){
 
 	var modules = this.modules;
 
-	console.log('THe modules Object')
-	console.log(modules)
+	// console.log('THe modules Object')
+	// console.log(modules)
 
 
 	if(Object.keys(modules).length > 0){
@@ -175,7 +175,7 @@ CORE.prototype.dom = function(){
 
 			createElement: function(selector){
 
-				console.log('The value of this inside create element')
+				// console.log('The value of this inside create element')
 			
 				var el = SUKU.create_element(selector);
 

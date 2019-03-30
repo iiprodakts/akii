@@ -1,16 +1,29 @@
 
 import * as methods from "./methods"
 import  actions from './actions'
-import  reducers from './reducers'
+import  reducer from './reducer'
+import List from './components/list'
+import Form from './components/form'
+import Count from './components/form'
 
-class Home{
+
+class Todo{
   
   
   constructor(sandbox){
 
     this.sb = sandbox
     this.actions = actions
-    this.reducers = reducers
+    this.reducer = reducer
+    this.trunk = null
+    this.children = [
+
+      new List(this),
+      // counter : new Count(this),
+      new Form(this)
+
+    ]
+    
 
 
     // methods
@@ -24,6 +37,7 @@ class Home{
     this.evs = methods.evs
     this.functions = methods.functions
     this.build = methods.build
+    this.createTrunk = methods.createTrunk
     this.render = methods.render
    
 
@@ -33,4 +47,4 @@ class Home{
 
 }
 
-export default Home
+export default Todo

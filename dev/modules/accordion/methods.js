@@ -93,8 +93,8 @@ export const createController = function(){
 
 export const handleCreateAccordion = function(data){
 
-	console.log('Create Modal event has occured')
-	console.log(data)
+	// console.log('Create Modal event has occured')
+	// console.log(data)
 	this.createAccordion(data)
 
 }

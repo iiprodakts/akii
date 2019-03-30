@@ -22,7 +22,7 @@ export const  Activator = (dependencies,libs)=>{
 
 				if(v.length > 0){
 
-					console.log('Executing the module with view')
+					// console.log('Executing the module with view')
 				
 
 					var attribs = dependencies.SUKU.get_element_attributes(v[0]);
@@ -73,7 +73,7 @@ export const  Activator = (dependencies,libs)=>{
 					
 					let modInstId = moduId
 						   
-					console.log('Executing module without view')
+					// console.log('Executing module without view')
 
 					core.createModule(
 				

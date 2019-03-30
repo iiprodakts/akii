@@ -43,17 +43,29 @@ export const handleCreateList = function(data){
 
 export const createList = function(data){
 	 
-	 
+	 console.log('THE LIST EVENT HAS OCCURED')
    //   var dom = null
 	 
-	 console.log('The data structure object')
-   //   console.log(data)
+	  console.log('The data structure object')
+      console.log(data)
    //   console.log(Object.keys(data))
    //   var rootName = Object.keys(data)[0]
-	  console.log(data)
+	//   console.log(data)
 
 	 var root = data.parent
-	 var children = this.createChildren(root,data.data)
+	 var children = ''
+	 if(data.hasOwnProperty('style')){
+
+
+		  children = this.createChildren(root,data.data,data.style)
+			
+	 }else{
+
+			console.log('The data object has no style property')
+		  children = this.createChildren(root,data.data)
+
+	 }
+	//  var children = this.createChildren(root,data.data,)
 	 this.addChildren(root,children)
    // //   var root = this.addChildren(root,children)
 
@@ -64,12 +76,26 @@ export const createList = function(data){
 }
 
 
-export const create = function(name,props,ops){
+export const create = function(name = '',props = null,ops=null){
 
-   console.log('Create')
-   console.log(props)
-   var sb = this.sb  
-   var el = this.addProps(this.addOps(sb.sb_createElement(name),ops),props)
+//    console.log('Create')
+//    console.log(props)
+  console.log('Creat list')
+  console.log(name)
+	var sb = this.sb 
+	
+	if(props){
+
+		var el = this.addProps(this.addOps(sb.sb_createElement(name),ops),props)
+
+	}else{
+
+		var el = sb.sb_createElement(name)
+
+		console.log('CREATE el')
+		console.log(el)
+	}
+  
    //  var el = this.addProps(el,props.presentational)
 
 	return el
@@ -77,7 +103,7 @@ export const create = function(name,props,ops){
 
 }
 
-export const createChildren = function(root,children){
+export const createChildren = function(root,children,style = ''){
 	 
    
 
@@ -89,24 +115,30 @@ export const createChildren = function(root,children){
 	for(let c=0; c < children.length; c++){
 
 		var e = children[c]
-		console.log('The current child props property')
-		console.log(e.props)
-		var el = this.create(e.element,e.props.presentational,e.props.functional)
+		// console.log('The current child props property')
+		// console.log(e.props)
+		var el = this.create('li')
+		if(style){
 
-		if(e.children){
-
-			console.log('The current element has children')
-			console.log(e.children)
-			sb.sb_addChild(root,el)
-			this.createChildren(el,e.children)
-
-
-		}else{
-
-			console.log('The last innermost element has no children')
-			sb.sb_addChild(root,el)
-
+			sb.sb_addProperty(el,'class',style)
 		}
+
+		sb.sb_insertInner(el,e)
+
+		// if(e.children){
+
+		// 	console.log('The current element has children')
+		// 	console.log(e.children)
+		// 	sb.sb_addChild(root,el)
+		// 	this.createChildren(el,e.children)
+
+
+		// }else{
+
+		// 	console.log('The last innermost element has no children')
+		// 	sb.sb_addChild(root,el)
+
+		// }
 
 		descends.push(el)
 
@@ -121,15 +153,24 @@ export const createChildren = function(root,children){
 
 export const addChildren = function(parent,children){
 	 
+	console.log('Add children list runs')
+	console.log(parent)
+	console.log(children)
    var sb = this.sb
 
-   for(let c=0; c < children.length; ++c){
+   for(let c=0; c < children.length; c++){
 
-	   sb.sb_addChild(parent,children[c])
-   }
+		console.log(c)
+		console.log(children[c])
+		sb.sb_addChild(parent,children[c])
+		console.log(parent)
+	}
+	
+	console.log('list parent')
+	console.log(parent)
    
 
-   //  return parent
+    return parent
    
 
 }
@@ -139,9 +180,9 @@ export const addProps = function(el,props){
 	 
    var sb = this.sb
 
-   console.log('ADD PROPS')
-   console.log(props)
-   console.log(el)
+//    console.log('ADD PROPS')
+//    console.log(props)
+//    console.log(el)
    
    if(props.set){
 
@@ -170,17 +211,17 @@ export const addOps = function(el,ops){
 	 
    var sb = this.sb
 
-   console.log('ADD OPS')
-   console.log(ops)
-   console.log(el)
+//    console.log('ADD OPS')
+//    console.log(ops)
+//    console.log(el)
    
    if(ops.set){
 
 
 	   for(let p in ops.event){
 
-		   console.log('The data of event property')
-		   console.log(ops.event[p])
+		//    console.log('The data of event property')
+		//    console.log(ops.event[p])
 		   sb.sb_addEvent(el,ops.event[p].type,ops.event[p].callback)
 		   // this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data}})
 		   

@@ -47,11 +47,11 @@ export const createForm = function(data){
 	 
    //   var dom = null
 	 
-	 console.log('The data structure object')
+	//  console.log('The data structure object')
    //   console.log(data)
    //   console.log(Object.keys(data))
    //   var rootName = Object.keys(data)[0]
-	  console.log(data)
+	//   console.log(data)
 
 	 var root = data.parent
 	 var children = this.createChildren(root,data.data)
@@ -67,8 +67,8 @@ export const createForm = function(data){
 
 export const create = function(name,props,ops){
 
-   console.log('Create')
-   console.log(props)
+//    console.log('Create')
+//    console.log(props)
    var sb = this.sb  
    var el = this.addProps(this.addOps(sb.sb_createElement(name),ops),props)
    //  var el = this.addProps(el,props.presentational)
@@ -102,8 +102,8 @@ export const createChildren = function(root,children,child){
 
 		   if(e.parent.children){
 
-			   console.log('The current element has[The parent] children')
-			   console.log(e.parent.children)
+			//    console.log('The current element has[The parent] children')
+			//    console.log(e.parent.children)
 
 			   sb.sb_addChild(root,el)
 			   this.createChildren(el,e.parent.children,{control:control,role:e.role,name: e.name})
@@ -111,10 +111,10 @@ export const createChildren = function(root,children,child){
 
 		   }else{
 
-			   console.log('The last innermost element has[The children] no children')
-			   console.log('The last innermost element has[The children] no children')
-			   console.log(el)
-			   console.log(control)
+			//    console.log('The last innermost element has[The children] no children')
+			//    console.log('The last innermost element has[The children] no children')
+			//    console.log(el)
+			//    console.log(control)
 			   sb.sb_addChild(el,control)
 			   sb.sb_addChild(root,el)
 
@@ -127,17 +127,17 @@ export const createChildren = function(root,children,child){
 
 			   if(e.children){
 
-				   console.log('The current element has children')
-				   console.log(e.children)
+				//    console.log('The current element has children')
+				//    console.log(e.children)
 				   sb.sb_addChild(root,el)
 				   this.createChildren(el,e.children)
 
 
 			   }else{
 
-				   console.log('The last innermost element has no children')
-				   console.log('The child')
-				   console.log(child)
+				   // console.log('The last innermost element has no children')
+				   // console.log('The child')
+				   // console.log(child)
 				   
 				   if(child){
 
@@ -189,9 +189,9 @@ export const addProps = function(el,props){
 	 
    var sb = this.sb
 
-   console.log('ADD PROPS')
-   console.log(props)
-   console.log(el)
+//    console.log('ADD PROPS')
+//    console.log(props)
+//    console.log(el)
    
    if(props.set){
 
@@ -220,17 +220,17 @@ export const addOps = function(el,ops){
 	 
    var sb = this.sb
 
-   console.log('ADD OPS')
-   console.log(ops)
-   console.log(el)
+//    console.log('ADD OPS')
+//    console.log(ops)
+//    console.log(el)
    
    if(ops.set){
 
 
 	   for(let p in ops.event){
 
-		   console.log('The data of event property')
-		   console.log(ops.event[p])
+		//    console.log('The data of event property')
+		//    console.log(ops.event[p])
 		   sb.sb_addEvent(el,ops.event[p].type,ops.event[p].callback)
 		   // this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data}})
 		   

@@ -1,7 +1,7 @@
 
-import * as types from './types'
+// import * as types from './types'
 
-const reducer =  (context,data)=>{
+export default (context,data)=>{
 
     const self = context
 
@@ -25,15 +25,15 @@ const reducer =  (context,data)=>{
 }
 
 
-module.exports = [
+// module.exports = [
 
-        {
+//         {
 
-            type: types.TEST_TYPE,
-            reducer: reducer
+//             type: types.TEST_TYPE,
+//             reducer: reducer
            
-        }
-]
+//         }
+// ]
 
 
 

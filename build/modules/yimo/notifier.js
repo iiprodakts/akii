@@ -17,13 +17,18 @@ function () {
   function Notifier() {
     _classCallCheck(this, Notifier);
 
-    this.events = {};
+    this.evs = {};
+    this.listen = listen;
+    this.emit = emit;
+    console.log('THE NOTIFIER EXECUTES');
   }
 
   _createClass(Notifier, [{
     key: "listen",
     value: function listen(evt, data) {
       self = this;
+      console.log('THE NOTIFIER LISTEN');
+      console.log(this.evs);
       console.log("Event: ".concat(evt, " has been subscribed, and the data is: ").concat(data));
       console.log(data);
       console.log(self.evts.events);
@@ -38,11 +43,12 @@ function () {
     key: "emit",
     value: function emit(evt, component) {
       var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+      console.log('THE NOTIFIEF EMIT');
       console.log('Hi, I am the emit on state change');
 
       for (var evts in self.evts.events) {
         if (self.evts.events.hasOwnProperty(component)) {
-          self.evts.events[component]['callback'](data);
+          self.evts.events[component]['callback'](self.state);
           console.log(self.state);
           break;
         }
