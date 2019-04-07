@@ -17,6 +17,7 @@ class List{
         "save me"
       ]
     }
+    this.dt = [1,2,3,'four','five']
 
 
     // this.reducers = reducers
@@ -27,17 +28,21 @@ class List{
 
   build(state){
 
-     console.log('Referencing the emit')
-     console.log(this.parent.emit)
+    //  console.log('Referencing the emit')
+    //  console.log(this.parent.emit)
      
+    
+     this.dt.push(this.dt.length + 1)
+     const dt = this.dt
      const trunk = this.parent.trunk
-     const name = this.constructor.name
+     const name = this.constructor.name.toLowerCase()
      this.parent.emit({type:'create-dom-tree',data:{
 
       trunk: trunk,
+      name: name,
       div:{
           
-          //name: name,
+         
           props: {
 
               presentational:{

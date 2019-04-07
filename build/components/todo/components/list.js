@@ -19,24 +19,26 @@ function () {
 
     this.parent = home;
     this.initState = {
-      items: ["strong", "light on me", "save me"] // this.reducers = reducers
-
+      items: ["strong", "light on me", "save me"]
     };
+    this.dt = [1, 2, 3, 'four', 'five']; // this.reducers = reducers
   }
 
   _createClass(List, [{
     key: "build",
     value: function build(state) {
-      console.log('Referencing the emit');
-      console.log(this.parent.emit);
+      //  console.log('Referencing the emit')
+      //  console.log(this.parent.emit)
+      this.dt.push(this.dt.length + 1);
+      var dt = this.dt;
       var trunk = this.parent.trunk;
-      var name = this.constructor.name;
+      var name = this.constructor.name.toLowerCase();
       this.parent.emit({
         type: 'create-dom-tree',
         data: {
           trunk: trunk,
+          name: name,
           div: {
-            name: name,
             props: {
               presentational: {
                 set: true,

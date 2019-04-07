@@ -628,7 +628,7 @@ this.emit({type: 'action-dispatch',data: {
        trunk: self.trunk,
        main:{
            
-           name:name,
+        //    name:name,
            props: {
 
                presentational:{

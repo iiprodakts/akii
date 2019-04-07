@@ -2,9 +2,23 @@
 
 export const  Activator = (dependencies,libs)=>{
 
-	
-		const core = new dependencies.CORE(dependencies.SUKU)
-		const sandbox = new dependencies.SANDBOX(core)
+		// console.log('The value of the window.object')
+		  
+		// console.log(window.location)
+		// console.log(window.history)
+		// console.log(window.document)
+		// console.log(window.document.referrer)
+		// console.log(window.sana)
+		// console.log(this)
+		// console.log(window.SUKU)
+
+		// console.log(Object.getOwnPropertyNames(window))
+
+		let core = new dependencies.CORE(dependencies.SUKU)
+		let sandbox = new dependencies.SANDBOX(core)
+		
+		// console.log('The core before modules')
+	    // console.log(sandbox.sb_jsToJson(core))
 
 		libs.forEach( lib => {
 
@@ -12,13 +26,13 @@ export const  Activator = (dependencies,libs)=>{
 
 			for (let moco in lib) {
 			
-				console.log('Inside activate')
-				console.log(moco)
+				// console.log('Inside activate')
+				// console.log(moco)
 
 				let moduId = moco.toLowerCase()
 				var v = dependencies.SUKU.getAllBy_attribute('data-'+moduId);
 				
-				console.log(`Currently executing module: ${moco}`)
+				// console.log(`Currently executing module: ${moco}`)
 
 				if(v.length > 0){
 
@@ -58,7 +72,7 @@ export const  Activator = (dependencies,libs)=>{
 		
 					);
 		
-					console.log(`Currently starting module: ${moco}`)
+					// console.log(`Currently starting module: ${moco}`)
 					core.startModule(moduId,modInstId);
 		
 					// console.log('Dependicies')
@@ -82,7 +96,7 @@ export const  Activator = (dependencies,libs)=>{
 		
 					);
 		
-					console.log(`Currently starting module: ${moco}`)
+					// console.log(`Currently starting module: ${moco}`)
 					core.startModule(moduId,modInstId);
 		
 					// console.log('Dependicies')
@@ -97,6 +111,9 @@ export const  Activator = (dependencies,libs)=>{
 
 			
 		});
+
+
+	
 
 		
 	

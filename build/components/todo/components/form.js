@@ -30,13 +30,13 @@ function () {
       console.log('Referencing the emit');
       console.log(this.parent.emit);
       var trunk = this.parent.trunk;
-      var name = this.constructor.name;
+      var name = this.constructor.name.toLowerCase();
       this.parent.emit({
         type: 'create-dom-tree',
         data: {
           trunk: trunk,
+          name: name,
           div: {
-            name: name,
             props: {
               presentational: {
                 set: true,
@@ -103,9 +103,9 @@ function () {
   }, {
     key: "form",
     value: function form() {
-      var that = this;
-      console.log('The form component"s form method has been invoked');
-      console.log(that); // console.log('The value of t')
+      var that = this; // console.log('The form component"s form method has been invoked')
+      // console.log(that)
+      // console.log('The value of t')
       // console.log(t)
 
       return [{
@@ -217,6 +217,7 @@ function () {
     key: "addItem",
     value: function addItem(e) {
       console.log('The additem callback has been called on submit');
+      console.log('THE ADD ITEM EVENT HAS OCCURED');
       var sb = this.parent.sb;
       var p = sb.sb_getParent(e.target);
       var fm = sb.sb_getParent(p);

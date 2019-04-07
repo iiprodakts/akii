@@ -3,11 +3,12 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.initState = exports.supubEmit = exports.supubListen = exports.actionDispatch = exports.handleActionDispatch = exports.subscribeToStore = exports.handleSubscribeToStore = exports.connectToStore = exports.handleConnectToStore = exports.setState = exports.reducer = exports.dispatch = exports.connect = exports.emit = exports.listens = exports.init = void 0;
+exports.rem = exports.unload = exports.initState = exports.supubEmit = exports.supubListen = exports.actionDispatch = exports.handleActionDispatch = exports.subscribeToStore = exports.handleSubscribeToStore = exports.connectToStore = exports.handleConnectToStore = exports.setState = exports.reducer = exports.dispatch = exports.connect = exports.emit = exports.listens = exports.init = void 0;
 
 var init = function init() {
   console.log('Store has been initialised');
   this.listens();
+  this.unload();
 };
 
 exports.init = init;
@@ -284,3 +285,17 @@ var initState = function initState(data) {
 };
 
 exports.initState = initState;
+
+var unload = function unload() {
+  var sb = this.sb;
+  sb.sb_addEvent(window, 'unload', this.rem.bind(this));
+};
+
+exports.unload = unload;
+
+var rem = function rem(e) {
+  console.log('The state is emptied');
+  this.state = null;
+};
+
+exports.rem = rem;

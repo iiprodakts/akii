@@ -417,17 +417,17 @@ var functions = function functions() {
 exports.functions = functions;
 
 var build = function build(state) {
-  console.log('The initial state');
-  console.log(state);
-  console.log(this);
+  // console.log('The initial state')
+  // console.log(state)
+  // console.log(this)
   this.trunk = this.createTrunk();
   this.children.forEach(function (child) {
     child.build(state);
   }); //   var that = o;
   //   console.log('The value of that')
   //   console.log(o)
-
-  var evs = this.evs(); //   var funks = this.functions()
+  // var evs = this.evs()
+  //   var funks = this.functions()
   //   console.log('The emit')
   //   console.log(funks)
   // this.emit({type: 'action-dispatch',data: {

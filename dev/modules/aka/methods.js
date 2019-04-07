@@ -13,7 +13,7 @@ export const listens = function(){
 	// console.log('AKA LISTENS TO THE CREATE DOM TREE EVENT')
 	sb.sb_notifyListen({
 		
-		 'create-dom-tree' : this.handleCreateDomTree.bind(this),
+		 'create-dom' : this.handleCreateDomTree.bind(this),
 		 
 		
 	},sb.moduleMeta.moduleId,sb.moduleMeta.modInstId)
@@ -51,11 +51,18 @@ export const createDomTree = function(data){
 	  
 	//   var dom = null
 
+	console.log('Data custom parent')
+	console.log(data)
+
 	const sb = this.sb
 	var trunk = data.trunk
-	var rootName = Object.keys(data)[1]
-	var branch = data[rootName].name
-	var custom = `data-${trunk.id.toLowerCase()}`
+	const vd = data.vd.children
+	var rootName = vd.element
+
+	console.log('The vd ')
+	console.log(vd)
+	// var branch = data[rootName].name
+	// var custom = `data-${trunk.id.toLowerCase()}`
 	// var dataChildCustom = `${dataParentCustom}-${branch.toLowerCase()}`
 
 	// console.log('Data custom parent')
@@ -65,14 +72,24 @@ export const createDomTree = function(data){
 	// console.log(branch)
 	//   console.log(rootName)
 
-	  var root = this.create(rootName,data[rootName].props.presentational,data[rootName].props.functional)
-	  var children = this.createChildren(root,data[rootName].children)
+	  var root = this.create(rootName,vd.vd.props.presentational,vd.vd.props.functional)
+	  var children = this.createChildren(root,vd.vd.children)
 	  var root = this.addChildren(root,children)
 	   sb.sb_addChild(trunk,root)
 	//   var root = this.addChildren(root,children)
 
 
-	   this.domTreeCreated({trunk: trunk,branch: branch})
+	   this.domTreeCreated({trunk: trunk,domId:{
+
+		  view: data.vd.view,
+		  children: [
+
+			{
+			name: vd.name,
+			dom: root
+		   }
+
+	   ]}})
 
 }
 

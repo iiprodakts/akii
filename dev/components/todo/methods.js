@@ -611,9 +611,9 @@ export const functions = function(){
 export const build = function(state){
 
 
-    console.log('The initial state')
-    console.log(state)
-    console.log(this)
+    // console.log('The initial state')
+    // console.log(state)
+    // console.log(this)
 
     this.trunk = this.createTrunk()
 
@@ -626,7 +626,7 @@ export const build = function(state){
 
 //   console.log('The value of that')
 //   console.log(o)
-    var evs = this.evs()
+    // var evs = this.evs()
 //   var funks = this.functions()
 
 //   console.log('The emit')

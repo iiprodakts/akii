@@ -432,7 +432,7 @@ var build = function build() {
     data: {
       trunk: self.trunk,
       main: {
-        name: name,
+        //    name:name,
         props: {
           presentational: {
             set: true,

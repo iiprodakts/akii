@@ -29,14 +29,15 @@ class Form{
      console.log(this.parent.emit)
 
      const trunk = this.parent.trunk
-     const name = this.constructor.name
+     const name = this.constructor.name.toLowerCase()
 
      this.parent.emit({type:'create-dom-tree',data:{
 
       trunk: trunk,
+      name: name,
       div:{
           
-         //name: name,
+         
           props: {
 
               presentational:{
@@ -155,8 +156,8 @@ class Form{
 form(){
 
     var that = this
-    console.log('The form component"s form method has been invoked')
-    console.log(that)
+    // console.log('The form component"s form method has been invoked')
+    // console.log(that)
       // console.log('The value of t')
       // console.log(t)
 
@@ -332,6 +333,8 @@ form(){
 addItem(e){
 
   console.log('The additem callback has been called on submit')
+  console.log('THE ADD ITEM EVENT HAS OCCURED')
+
 
     var sb = this.parent.sb
     var p = sb.sb_getParent(e.target)
@@ -368,10 +371,6 @@ addItem(e){
 }
 
   
-    
+}
   
-    
-  
-  }
-  
-  export default Form
+export default Form

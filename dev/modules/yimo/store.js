@@ -16,8 +16,10 @@ class Store{
   
     // console.log('THE STORE')
     // console.log(this.supub)
-    // console.log('THE STORE STATE PROPERTY')
-    // console.log(this.state)
+    //  console.log('THE STORE STATE PROPERTY')
+    //  console.log(this.sb.sb_jsToJson(this.state))
+    //  console.log(this.state)
+    
 
 
 
@@ -41,6 +43,8 @@ class Store{
      this.supubListen = methods.supubListen,
      this.supubEmit = methods.supubEmit
      this.initState = methods.initState
+     this.unload = methods.unload
+     this.rem = methods.rem
 
     //  console.log('The state property at the beginning')
     //  console.log(this.state)

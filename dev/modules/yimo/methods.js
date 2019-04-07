@@ -6,6 +6,7 @@ export const init = function(){
   
   console.log('Store has been initialised')
 	this.listens()
+	this.unload()
 	
 }
 
@@ -366,4 +367,18 @@ export const initState = function(data){
 	self.supub[data.component]['callback'](data.state)
 
 
+}
+
+export const unload = function(){
+
+
+	let sb = this.sb
+
+	sb.sb_addEvent(window,'unload',this.rem.bind(this))
+}
+
+export const rem = function(e){
+
+	console.log('The state is emptied')
+	this.state = null
 }
