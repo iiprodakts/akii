@@ -13,10 +13,10 @@ var init = function init() {
 exports.init = init;
 
 var listens = function listens() {
-  var sb = this.sb;
-  console.log('AKA LISTENS TO THE CREATE DOM TREE EVENT');
+  var sb = this.sb; // console.log('AKA LISTENS TO THE CREATE DOM TREE EVENT')
+
   sb.sb_notifyListen({
-    'create-dom-tree': this.handleCreateDomTree.bind(this)
+    'create-dom': this.handleCreateDomTree.bind(this)
   }, sb.moduleMeta.moduleId, sb.moduleMeta.modInstId);
 };
 
@@ -35,8 +35,8 @@ var emit = function emit(eNotifs) {
 exports.emit = emit;
 
 var handleCreateDomTree = function handleCreateDomTree(data) {
-  var sb = this.sb;
-  console.log('The Create Dom TREE EVENT IS CAUGHT');
+  var sb = this.sb; // console.log('The Create Dom TREE EVENT IS CAUGHT')
+
   this.createDomTree(data);
 };
 
@@ -44,23 +44,45 @@ exports.handleCreateDomTree = handleCreateDomTree;
 
 var createDomTree = function createDomTree(data) {
   //   var dom = null
-  console.log('The data structure object');
+  console.log('Data custom parent');
   console.log(data);
-  console.log(Object.keys(data));
-  var rootName = Object.keys(data)[0];
-  console.log(rootName);
-  var root = this.create(rootName, data[rootName].props.presentational, data[rootName].props.functional);
-  var children = this.createChildren(root, data[rootName].children);
-  var root = this.addChildren(root, children); //   var root = this.addChildren(root,children)
+  var sb = this.sb;
+  var trunk = data.trunk;
+  var vd = data.vd.children;
+  var rootName = vd.element;
+  console.log('The vd ');
+  console.log(vd); // var branch = data[rootName].name
+  // var custom = `data-${trunk.id.toLowerCase()}`
+  // var dataChildCustom = `${dataParentCustom}-${branch.toLowerCase()}`
+  // console.log('Data custom parent')
+  // console.log(`${dataParentCustom}`)
+  // console.log('Data branch thing')
+  // console.log(`${dataChildCustom}`)
+  // console.log(branch)
+  //   console.log(rootName)
 
-  this.domTreeCreated(root);
+  var root = this.create(rootName, vd.vd.props.presentational, vd.vd.props.functional);
+  var children = this.createChildren(root, vd.vd.children);
+  var root = this.addChildren(root, children);
+  sb.sb_addChild(trunk, root); //   var root = this.addChildren(root,children)
+
+  this.domTreeCreated({
+    trunk: trunk,
+    domId: {
+      view: data.vd.view,
+      children: [{
+        name: vd.name,
+        dom: root
+      }]
+    }
+  });
 };
 
 exports.createDomTree = createDomTree;
 
 var create = function create(name, props, ops) {
-  console.log('Create');
-  console.log(props);
+  // console.log('Create')
+  // console.log(props)
   var sb = this.sb;
   var el = this.addProps(this.addOps(sb.sb_createElement(name), ops), props); //  var el = this.addProps(el,props.presentational)
 
@@ -74,9 +96,9 @@ var createChildren = function createChildren(root, children) {
   var descends = [];
 
   for (var c = 0; c < children.length; c++) {
-    var e = children[c];
-    console.log('The current child props property');
-    console.log(e.props);
+    var e = children[c]; // console.log('The current child props property')
+    // console.log(e.props)
+
     var el = this.create(e.element, e.props.presentational, e.props.functional);
 
     if (e.children) {
@@ -110,10 +132,9 @@ var addChildren = function addChildren(parent, children) {
 exports.addChildren = addChildren;
 
 var addProps = function addProps(el, props) {
-  var sb = this.sb;
-  console.log('ADD PROPS');
-  console.log(props);
-  console.log(el);
+  var sb = this.sb; // console.log('ADD PROPS')
+  // console.log(props)
+  // console.log(el)
 
   if (props.set) {
     for (var p in props.presents) {
@@ -131,23 +152,69 @@ var addProps = function addProps(el, props) {
 exports.addProps = addProps;
 
 var addOps = function addOps(el, ops) {
-  var sb = this.sb;
-  console.log('ADD OPS');
-  console.log(ops);
-  console.log(el);
+  var sb = this.sb; // console.log('ADD OPS')
+  // console.log(ops)
+  // console.log(el)
 
   if (ops.set) {
     for (var p in ops.meta) {
       if (p === 'emit') {
-        console.log('The data of emit property');
-        console.log(ops.meta[p]);
-        this.emit({
-          type: ops.meta[p].type,
-          data: {
-            parent: el,
-            data: ops.meta[p].data
-          }
-        });
+        // console.log('The data of emit property')
+        // console.log(ops.meta[p])
+        if (ops.meta[p].hasOwnProperty('style') && ops.meta[p].hasOwnProperty('children')) {
+          console.log('The style string');
+          var style = ops.meta[p].style;
+          var children = ops.meta[p].children;
+          console.log(style);
+          console.log(children);
+          this.emit({
+            type: ops.meta[p].type,
+            data: {
+              parent: el,
+              data: ops.meta[p].data.data,
+              style: style,
+              children: children
+            }
+          });
+        } else if (ops.meta[p].hasOwnProperty('style')) {
+          console.log('The style string');
+          var _style = ops.meta[p].style;
+          console.log(_style);
+          this.emit({
+            type: ops.meta[p].type,
+            data: {
+              parent: el,
+              data: ops.meta[p].data.data,
+              style: _style
+            }
+          });
+        } else if (ops.meta[p].hasOwnProperty('children')) {
+          console.log('The children string');
+          var _children = ops.meta[p].children;
+          console.log(_children);
+          this.emit({
+            type: ops.meta[p].type,
+            data: {
+              parent: el,
+              data: ops.meta[p].data.data,
+              children: _children
+            }
+          });
+        } else {
+          this.emit({
+            type: ops.meta[p].type,
+            data: {
+              parent: el,
+              data: ops.meta[p].data.data
+            }
+          });
+        }
+      } else if (p === 'event') {
+        for (var _p in ops.event) {
+          //    console.log('The data of event property')
+          //    console.log(ops.event[p])
+          sb.sb_addEvent(el, ops.event[_p].type, ops.event[_p].callback); // this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data}})
+        }
       }
     }
   }

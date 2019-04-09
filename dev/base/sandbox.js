@@ -401,6 +401,12 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 
 				
 				return converts.jsonToJs(json);
+			},
+
+			sb_clone: function(c){
+
+				
+				return converts.clone(c);
 			}
 
 

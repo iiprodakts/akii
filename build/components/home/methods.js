@@ -3,16 +3,32 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.build = exports.functions = exports.evs = exports.messenger = exports.domTreeCreated = exports.handleDomTreeCreated = exports.emit = exports.listens = exports.init = void 0;
+exports.createTrunk = exports.render = exports.build = exports.functions = exports.evs = exports.messenger = exports.domTreeCreated = exports.handleDomTreeCreated = exports.emit = exports.listens = exports.init = void 0;
 
 var init = function init() {
+  var self = this;
   this.listens();
   this.emit({
+<<<<<<< HEAD
+=======
+    type: 'subscribe-to-store',
+    data: {
+      event: 'STATE-CHANGE',
+      component: 'home',
+      callback: self.render
+    }
+  });
+  this.emit({
+>>>>>>> development
     type: 'connect-to-store',
     data: {
       component: 'home',
       actions: this.actions,
+<<<<<<< HEAD
       reducers: this.reducers
+=======
+      reducer: this.reducer
+>>>>>>> development
     }
   });
   this.build(); //  this.emit({type:'component-mount',data: this.build})
@@ -55,9 +71,13 @@ var handleDomTreeCreated = function handleDomTreeCreated(data) {
 exports.handleDomTreeCreated = handleDomTreeCreated;
 
 var domTreeCreated = function domTreeCreated(data) {
+  var self = this;
   this.emit({
-    type: 'add-dom-component',
-    data: data
+    type: 'add-domto-vd',
+    data: {
+      data: data,
+      id: self.constructor.name
+    }
   });
 };
 
@@ -400,14 +420,26 @@ var build = function build() {
   //   var that = o;
   //   console.log('The value of that')
   //   console.log(o)
-  var evs = this.evs(); //   var funks = this.functions()
+  var evs = this.evs();
+  var self = this; //   var funks = this.functions()
   //   console.log('The emit')
   //   console.log(funks)
 
+  this.trunk = this.createTrunk();
+  var name = this.constructor.name;
+  this.emit({
+    type: 'action-dispatch',
+    data: {
+      type: 'TEST_TYPE',
+      component: 'home'
+    }
+  });
   this.emit({
     type: 'create-dom-tree',
     data: {
-      article: {
+      trunk: self.trunk,
+      main: {
+        //    name:name,
         props: {
           presentational: {
             set: true,
@@ -516,3 +548,19 @@ var build = function build() {
 };
 
 exports.build = build;
+
+var render = function render() {
+  console.log('From the home component, I render on state change');
+};
+
+exports.render = render;
+
+var createTrunk = function createTrunk() {
+  var sb = this.sb;
+  var trunk = sb.sb_createElement('main');
+  sb.sb_addProperty(trunk, 'id', this.constructor.name.toLowerCase());
+  sb.sb_addProperty(trunk, 'class', 'component-view');
+  return trunk;
+};
+
+exports.createTrunk = createTrunk;

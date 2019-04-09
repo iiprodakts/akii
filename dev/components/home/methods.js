@@ -1,13 +1,22 @@
 export const init = function(){
-	
-    this.listens() 
+    
+    var self = this
+    this.listens()
+    this.emit({type:'subscribe-to-store',data: {
+
+        event: 'STATE-CHANGE',
+        component: 'home',
+        callback: self.render
+
+    } }) 
     this.emit({type: 'connect-to-store',data:{
 
         component: 'home',
         actions: this.actions,
-        reducers: this.reducers
+        reducer: this.reducer
 
     }})
+    
     this.build( ) 
    //  this.emit({type:'component-mount',data: this.build})
    //  this.emit({type:'get-component-name',data: ''})
@@ -63,7 +72,8 @@ export const handleDomTreeCreated = function(data){
 
 export const domTreeCreated = function(data){
 
-   this.emit({type:'add-dom-component',data:data})
+   const self = this
+   this.emit({type:'add-domto-vd',data:{data:data,id: self.constructor.name}})
 }
 
 export const messenger = function(data){
@@ -596,20 +606,29 @@ export const build = function(){
 //   console.log('The value of that')
 //   console.log(o)
     var evs = this.evs()
+    var self = this
+    
 //   var funks = this.functions()
 
 //   console.log('The emit')
 //   console.log(funks)
 
+   this.trunk = this.createTrunk()
+   const name = this.constructor.name
 
+this.emit({type: 'action-dispatch',data: {
 
+    type: 'TEST_TYPE',
+    component: 'home'
+}})
 
 
  this.emit({type:'create-dom-tree',data:{
 
-       article:{
+       trunk: self.trunk,
+       main:{
            
-          
+        //    name:name,
            props: {
 
                presentational:{
@@ -778,4 +797,24 @@ export const build = function(){
 
  }})
  
+}
+
+export const render = function(){
+
+    console.log('From the home component, I render on state change')
+}
+
+export const createTrunk = function(){
+
+    const sb = this.sb
+
+    const trunk = sb.sb_createElement('main')
+
+    sb.sb_addProperty(trunk,'id',this.constructor.name.toLowerCase())
+    sb.sb_addProperty(trunk,'class','component-view')
+
+    return trunk
+
+    
+
 }

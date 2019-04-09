@@ -1,7 +1,7 @@
 
 import * as methods from "./methods"
-import * as actions from './actions'
-import * as reducers from './reducers'
+import  actions from './actions'
+import  reducer from './reducer'
 
 class Home{
   
@@ -10,7 +10,11 @@ class Home{
 
     this.sb = sandbox
     this.actions = actions
-    this.reducers = reducers
+    this.reducer = reducer
+
+    console.log('Home ACTIONS')
+    console.log(actions)
+    console.log(this.actions)
 
 
     // methods
@@ -24,6 +28,8 @@ class Home{
     this.evs = methods.evs
     this.functions = methods.functions
     this.build = methods.build
+    this.createTrunk = methods.createTrunk
+    this.render = methods.render
    
 
   }

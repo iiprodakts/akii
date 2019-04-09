@@ -12,9 +12,8 @@ function CORE(lib) {
 
 
 CORE.prototype.createModule = function (module, moduleId, modInstId) {
-  var modules = this.modules;
-  console.log('THe modules Object');
-  console.log(modules);
+  var modules = this.modules; // console.log('THe modules Object')
+  // console.log(modules)
 
   if (Object.keys(modules).length > 0) {
     for (var _mod in modules) {
@@ -86,7 +85,7 @@ CORE.prototype.dom = function () {
     },
     // End of query container method
     createElement: function createElement(selector) {
-      console.log('The value of this inside create element');
+      // console.log('The value of this inside create element')
       var el = SUKU.create_element(selector);
       return el;
     },
@@ -307,6 +306,9 @@ CORE.prototype.converts = function () {
     },
     jsonToJs: function jsonToJs(json) {
       return SUKU.json_to_js(json);
+    },
+    clone: function clone(c) {
+      return SUKU.clone(c);
     }
   };
 };

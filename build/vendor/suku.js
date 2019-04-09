@@ -330,7 +330,25 @@ module.exports = {
     }
   },
   copy_deep: function copy_deep(node) {
+    var _this = this;
+
     var clonedDeepNode = node.cloneNode(true);
+
+    if (node.hasOwnProperty('hasEvents')) {
+      for (var e in events) {
+        this.ev_addHandler(clonedDeepNode, events[e].type, events[e].callback);
+      }
+    }
+
+    if (node.children.length > 0) {
+      var chs = clonedDeepNode.children;
+      Array.prototype.forEach.call(node.children, function (c, i) {
+        if (c.hasOwnProperty('hasEvents')) {
+          _this.ev_addHandler(chs[i], c.events.type, c.events.callback);
+        }
+      });
+    }
+
     return clonedDeepNode;
   },
   copy_shallow: function copy_shallow(node) {
@@ -876,6 +894,41 @@ module.exports = {
     var jsObject = JSON.parse(jsonString);
     return jsObject;
   },
+  clone: function clone(o) {
+    var _this2 = this;
+
+    if (o instanceof Array) {
+      var newA = [];
+      o.forEach(function (e) {
+        if (e instanceof Array) {
+          newA.push(_this2.clone(e));
+        } else if (e instanceof Object) {
+          newA.push(_this2.clone(e));
+        } else {
+          newA.push(e);
+        }
+      });
+      return newA;
+    } else if (o instanceof Object && typeof o !== 'function') {
+      var n = {};
+
+      for (var p in o) {
+        if (o[p] instanceof Array) {
+          n[p] = this.clone(o[p]);
+        } else if (o[p] instanceof Object && typeof o[p] !== 'function') {
+          n[p] = this.clone(o[p]);
+        } else {
+          if (p === 'callback') {
+            console.log('The current property is callback');
+          }
+
+          n[p] = o[p];
+        }
+      }
+
+      return n;
+    }
+  },
 
   /*********************************** OBJECT AND ARRAY CASTING ************************************************************/
   object_to_array: function object_to_array(castObj) {
@@ -884,7 +937,7 @@ module.exports = {
         var arr = [];
         var count = 0;
 
-        for (key in castObj) {
+        for (var key in castObj) {
           arr[count] = castObj[key];
           ++count;
         }

@@ -43,43 +43,55 @@ export const handleCreateList = function(data){
 
 export const createList = function(data){
 	 
-	 
-   //   var dom = null
-	 
-	 console.log('The data structure object')
-   //   console.log(data)
-   //   console.log(Object.keys(data))
-   //   var rootName = Object.keys(data)[0]
-	  console.log(data)
-
-	 var root = data.parent
-	 var children = this.createChildren(root,data.data)
-	 this.addChildren(root,children)
-   // //   var root = this.addChildren(root,children)
+		console.log('THE LIST DATA')
+		console.log(data)
+		
+		const sb = this.sb
+		let descends = []
+		for(let d = 0; d < data.data.length; d++){
 
 
+				let el = this.create('li')
+				sb.sb_insertInner(el,data.data[d])
+				descends.push(el)
+				data.hasOwnProperty('children') ? this.createChildren(el,data.children): ''
 
-   //   this.domTreeCreated(root)
+		}
+
+		this.addChildren(data.parent,descends)
+
 
 }
 
-
 export const create = function(name,props,ops){
 
-   console.log('Create')
-   console.log(props)
-   var sb = this.sb  
-   var el = this.addProps(this.addOps(sb.sb_createElement(name),ops),props)
-   //  var el = this.addProps(el,props.presentational)
+	// console.log('Create')
+	// console.log(props)
+	const sb = this.sb 
+	let el = {}
+	if(props){
 
-	return el
-   
+
+		let sb = this.sb  
+		el = this.addProps(this.addOps(sb.sb_createElement(name),ops),props)
+		//  var el = this.addProps(el,props.presentational)
+
+	}else{
+
+
+		  el = sb.sb_createElement(name)
+
+	}
+
+
+	 return el
+	
 
 }
 
 export const createChildren = function(root,children){
-	 
-   
+	  
+	
 
 
 	var sb = this.sb
@@ -89,8 +101,8 @@ export const createChildren = function(root,children){
 	for(let c=0; c < children.length; c++){
 
 		var e = children[c]
-		console.log('The current child props property')
-		console.log(e.props)
+		// console.log('The current child props property')
+		// console.log(e.props)
 		var el = this.create(e.element,e.props.presentational,e.props.functional)
 
 		if(e.children){
@@ -114,22 +126,31 @@ export const createChildren = function(root,children){
 
 	return descends
 
-   
-   
+	
+	
 
 }
 
 export const addChildren = function(parent,children){
 	 
+	console.log('Add children list runs')
+	console.log(parent)
+	console.log(children)
    var sb = this.sb
 
-   for(let c=0; c < children.length; ++c){
+   for(let c=0; c < children.length; c++){
 
-	   sb.sb_addChild(parent,children[c])
-   }
+		console.log(c)
+		console.log(children[c])
+		sb.sb_addChild(parent,children[c])
+		console.log(parent)
+	}
+	
+	console.log('list parent')
+	console.log(parent)
    
 
-   //  return parent
+    return parent
    
 
 }
@@ -139,9 +160,9 @@ export const addProps = function(el,props){
 	 
    var sb = this.sb
 
-   console.log('ADD PROPS')
-   console.log(props)
-   console.log(el)
+//    console.log('ADD PROPS')
+//    console.log(props)
+//    console.log(el)
    
    if(props.set){
 
@@ -166,30 +187,70 @@ export const addProps = function(el,props){
 }
 
 export const addOps = function(el,ops){
-	 
-	 
-   var sb = this.sb
+	  
+	  
+	var sb = this.sb
 
-   console.log('ADD OPS')
-   console.log(ops)
-   console.log(el)
-   
-   if(ops.set){
+	// console.log('ADD OPS')
+	// console.log(ops)
+	// console.log(el)
+	
+	if(ops.set){
+
+		console.log('THE ADD OPPS IS SET')
+		console.log(el)
+		console.log(ops)
 
 
-	   for(let p in ops.event){
+		if(ops.hasOwnProperty('meta')){
 
-		   console.log('The data of event property')
-		   console.log(ops.event[p])
-		   sb.sb_addEvent(el,ops.event[p].type,ops.event[p].callback)
-		   // this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data}})
-		   
-	   }
+			for(let p in ops.meta){
 
-   }
-   
-   
-   return el
+				if(p === 'emit'){
+	
+					// console.log('The data of emit property')
+					// console.log(ops.meta[p])
+					
+					if(ops.meta[p].hasOwnProperty('style')){
+	
+						console.log('The style string')
+						let style = ops.meta[p].style
+						console.log(style)
+	
+						this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data,style: style}})
+	
+					}else{
+	
+						this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data}})
+	
+					}
+					
+				}
+	
+				
+			}
+
+		}else if(ops.hasOwnProperty('event')){
+
+			console.log('The event property')
+			for(let p in ops.event){
+
+				//    console.log('The data of event property')
+				//    console.log(ops.event[p])
+					 el.hasEvents = true
+					 el.events = {type: ops.event[p].type, callback: ops.event[p].callback}
+					 sb.sb_addEvent(el,ops.event[p].type,ops.event[p].callback)
+					 // this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data}})
+					 
+			}
+				
+		}
+	
+
+	}
+	
+	
+	return el
 }
 
 export const listCreationDone = function(data){

@@ -32,10 +32,10 @@ var emit = function emit(eNotifs) {
 exports.emit = emit;
 
 var handleAddDomComponent = function handleAddDomComponent(data) {
-  var sb = this.sb;
-  console.log('The Dom View');
-  console.log(sb);
-  console.log(sb.view);
+  var sb = this.sb; // console.log('The Dom View')
+  // console.log(sb)
+  // console.log(sb.view)
+
   console.log('The Dom Child View');
   console.log(data);
   sb.sb_addChild(sb.view, data); // this.emit({type:'stop-preloader',data:''})

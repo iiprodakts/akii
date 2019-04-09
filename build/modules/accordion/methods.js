@@ -70,8 +70,8 @@ var createController = function createController() {
 exports.createController = createController;
 
 var handleCreateAccordion = function handleCreateAccordion(data) {
-  console.log('Create Modal event has occured');
-  console.log(data);
+  // console.log('Create Modal event has occured')
+  // console.log(data)
   this.createAccordion(data);
 };
 
