@@ -166,6 +166,9 @@ SANDBOX.prototype.create = function (moduleID, modInstId) {
     },
     sb_jsonToJs: function sb_jsonToJs(json) {
       return converts.jsonToJs(json);
+    },
+    sb_clone: function sb_clone(c) {
+      return converts.clone(c);
     } // End OF return
 
   };

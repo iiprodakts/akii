@@ -38,7 +38,7 @@ export default  (store,data) =>{
             break
             case 'REMOVE_ITEM': {
     
-                presets.updateItem(self,data)
+                presets.updateItem(store,data)
             } 
             break
             default:{

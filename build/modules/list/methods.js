@@ -39,48 +39,35 @@ var handleCreateList = function handleCreateList(data) {
 exports.handleCreateList = handleCreateList;
 
 var createList = function createList(data) {
-  console.log('THE LIST EVENT HAS OCCURED'); //   var dom = null
+  console.log('THE LIST DATA');
+  console.log(data);
+  var sb = this.sb;
+  var descends = [];
 
-  console.log('The data structure object');
-  console.log(data); //   console.log(Object.keys(data))
-  //   var rootName = Object.keys(data)[0]
-  //   console.log(data)
+  for (var d = 0; d < data.data.length; d++) {
+    var el = this.create('li');
+    sb.sb_insertInner(el, data.data[d]);
+    descends.push(el);
+    data.hasOwnProperty('children') ? this.createChildren(el, data.children) : '';
+  }
 
-  var root = data.parent;
-  var children = '';
-
-  if (data.hasOwnProperty('style')) {
-    children = this.createChildren(root, data.data, data.style);
-  } else {
-    console.log('The data object has no style property');
-    children = this.createChildren(root, data.data);
-  } //  var children = this.createChildren(root,data.data,)
-
-
-  this.addChildren(root, children); // //   var root = this.addChildren(root,children)
-  //   this.domTreeCreated(root)
+  this.addChildren(data.parent, descends);
 };
 
 exports.createList = createList;
 
-var create = function create() {
-  var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-  var props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-  var ops = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-  //    console.log('Create')
-  //    console.log(props)
-  console.log('Creat list');
-  console.log(name);
+var create = function create(name, props, ops) {
+  // console.log('Create')
+  // console.log(props)
   var sb = this.sb;
+  var el = {};
 
   if (props) {
-    var el = this.addProps(this.addOps(sb.sb_createElement(name), ops), props);
+    var _sb = this.sb;
+    el = this.addProps(this.addOps(_sb.sb_createElement(name), ops), props); //  var el = this.addProps(el,props.presentational)
   } else {
-    var el = sb.sb_createElement(name);
-    console.log('CREATE el');
-    console.log(el);
-  } //  var el = this.addProps(el,props.presentational)
-
+    el = sb.sb_createElement(name);
+  }
 
   return el;
 };
@@ -88,7 +75,6 @@ var create = function create() {
 exports.create = create;
 
 var createChildren = function createChildren(root, children) {
-  var style = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
   var sb = this.sb;
   var descends = [];
 
@@ -96,21 +82,17 @@ var createChildren = function createChildren(root, children) {
     var e = children[c]; // console.log('The current child props property')
     // console.log(e.props)
 
-    var el = this.create('li');
+    var el = this.create(e.element, e.props.presentational, e.props.functional);
 
-    if (style) {
-      sb.sb_addProperty(el, 'class', style);
+    if (e.children) {
+      console.log('The current element has children');
+      console.log(e.children);
+      sb.sb_addChild(root, el);
+      this.createChildren(el, e.children);
+    } else {
+      console.log('The last innermost element has no children');
+      sb.sb_addChild(root, el);
     }
-
-    sb.sb_insertInner(el, e); // if(e.children){
-    // 	console.log('The current element has children')
-    // 	console.log(e.children)
-    // 	sb.sb_addChild(root,el)
-    // 	this.createChildren(el,e.children)
-    // }else{
-    // 	console.log('The last innermost element has no children')
-    // 	sb.sb_addChild(root,el)
-    // }
 
     descends.push(el);
   }
@@ -161,15 +143,56 @@ var addProps = function addProps(el, props) {
 exports.addProps = addProps;
 
 var addOps = function addOps(el, ops) {
-  var sb = this.sb; //    console.log('ADD OPS')
-  //    console.log(ops)
-  //    console.log(el)
+  var sb = this.sb; // console.log('ADD OPS')
+  // console.log(ops)
+  // console.log(el)
 
   if (ops.set) {
-    for (var p in ops.event) {
-      //    console.log('The data of event property')
-      //    console.log(ops.event[p])
-      sb.sb_addEvent(el, ops.event[p].type, ops.event[p].callback); // this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data}})
+    console.log('THE ADD OPPS IS SET');
+    console.log(el);
+    console.log(ops);
+
+    if (ops.hasOwnProperty('meta')) {
+      for (var p in ops.meta) {
+        if (p === 'emit') {
+          // console.log('The data of emit property')
+          // console.log(ops.meta[p])
+          if (ops.meta[p].hasOwnProperty('style')) {
+            console.log('The style string');
+            var style = ops.meta[p].style;
+            console.log(style);
+            this.emit({
+              type: ops.meta[p].type,
+              data: {
+                parent: el,
+                data: ops.meta[p].data,
+                style: style
+              }
+            });
+          } else {
+            this.emit({
+              type: ops.meta[p].type,
+              data: {
+                parent: el,
+                data: ops.meta[p].data
+              }
+            });
+          }
+        }
+      }
+    } else if (ops.hasOwnProperty('event')) {
+      console.log('The event property');
+
+      for (var _p in ops.event) {
+        //    console.log('The data of event property')
+        //    console.log(ops.event[p])
+        el.hasEvents = true;
+        el.events = {
+          type: ops.event[_p].type,
+          callback: ops.event[_p].callback
+        };
+        sb.sb_addEvent(el, ops.event[_p].type, ops.event[_p].callback); // this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data}})
+      }
     }
   }
 

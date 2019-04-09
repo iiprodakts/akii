@@ -97,6 +97,12 @@ var checkVD = function checkVD(data) {
     for (var c = 0; c < vod.length; c++) {
       if (vod[c].view === data.trunk.id) {
         for (var vdC = 0; vdC < vod[c].children.length; vdC++) {
+          console.log('The Old and new vd names');
+          console.log(vod[c].children[vdC]);
+          console.log(vod[c].children[vdC].name);
+          console.log(data);
+          console.log(data.name);
+
           if (vod[c].children[vdC].name === data.name) {
             console.log('The old Virtual Dom real Dom');
             console.log('We have a this component, lets start diffing');
@@ -115,10 +121,13 @@ var checkVD = function checkVD(data) {
             break;
           } else if (vdC === vod[c].children.length - 1) {
             console.log("Another child of the ".concat(data.trunk.id, " to be added: ").concat(data.name));
+            console.log('The object from clone');
+            console.log(sb.sb_clone(data[Object.keys(data)[2]]));
+            console.log(data[Object.keys(data)[2]]);
             vod[c].children.push({
               name: data.name,
               element: Object.keys(data)[2],
-              vd: Object.assign({}, data[Object.keys(data)[2]])
+              vd: sb.sb_clone(data[Object.keys(data)[2]])
             });
             var index = vod[c].children.length - 1; // this.createDomTree({vd:vd[c].children,trunk: data.trunk})
 
@@ -144,7 +153,7 @@ var checkVD = function checkVD(data) {
           children: [{
             name: data.name,
             element: Object.keys(data)[2],
-            vd: Object.assign({}, data[Object.keys(data)[2]])
+            vd: sb.sb_clone(data[Object.keys(data)[2]])
           }]
         });
 
@@ -170,11 +179,21 @@ var checkVD = function checkVD(data) {
       children: [{
         name: data.name,
         element: Object.keys(data)[2],
-        vd: Object.assign({}, data[Object.keys(data)[2]])
+        vd: sb.sb_clone(data[Object.keys(data)[2]])
       }]
-    }); // console.log('The virtaual dom object has a child at this point')
+    });
+    console.log('The object from clone');
+    console.log(sb.sb_clone(data[Object.keys(data)[2]]));
+    console.log(data[Object.keys(data)[2]]);
+
+    if (sb.sb_clone(data[Object.keys(data)[2]]) === data[Object.keys(data)[2]]) {
+      console.log('The cloned object and the original are the same');
+    } else {
+      console.log('THE CLONED AND ORIGINAL REFERENCE A TOTAL DIFFERENT OBJECT IN MEMEORY');
+    } // console.log('The virtaual dom object has a child at this point')
     // console.log(sb.sb_jsToJson(vd))
     // console.log(vd.length)
+
 
     this.createDomTree({
       vd: {
@@ -252,30 +271,131 @@ var childDiff = function childDiff(oldChs, newChs, domChs) {
           console.log(nFunks);
 
           if (oFunks.meta.hasOwnProperty('emit') && nFunks.meta.hasOwnProperty('emit')) {
-            if (oFunks.meta.emit.data instanceof Array && oFunks.meta.emit.data.length > 2) {
+            if (oFunks.meta.emit.data.type === 'datum') {
               console.log('The type of data in here is ');
               console.log(oFunks.meta.emit.data);
               console.log(nFunks.meta.emit.data);
 
-              if (oFunks.meta.emit.data === nFunks.meta.emit.data) {
+              if (oFunks.meta.emit.data.data.length === nFunks.meta.emit.data.data.length) {
                 console.log('The two arrays reference the same object in memory');
 
-                for (var _p = 0; _p < oFunks.meta.emit.data.length; _p++) {
-                  if (oFunks.meta.emit.data[_p] !== nFunks.meta.emit.data[_p]) {
-                    console.log('THE LENGH OFUNKS AND NFUNKS IS DIFFERENT');
-                    oFunks.meta.emit.data[_p] = nFunks.meta.emit.data[_p];
-                    domChs[c].children[_p].innerHTML = nFunks.meta.emit.data[_p];
+                for (var p = 0; p < nFunks.meta.emit.data.data.length; p++) {
+                  // if(oFunks.meta.emit.data[p] !== nFunks.meta.emit.data[p]){
+                  //    console.log('THE LENGH OFUNKS AND NFUNKS IS DIFFERENT')
+                  //    oFunks.meta.emit.data[p] = nFunks.meta.emit.data[p]
+                  //    domChs[c].children[p].innerHTML = nFunks.meta.emit.data[p]
+                  // }else 
+                  if (nFunks.meta.emit.data.data[p] === undefined) {
+                    domChs[c].children[p].remove();
+                    nFunks.meta.emit.data.data.splice(p, 1);
+                    oFunks.meta.emit.data.data.splice(p, 1);
+                    break;
                   }
                 }
-              } else if (oFunks.meta.emit.data.length > nFunks.meta.emit.data.length) {
+              } else if (oFunks.meta.emit.data.data.length > nFunks.meta.emit.data.data.length) {
                 console.log('The data is not the same');
-                domChs[c].children[oFunks.meta.emit.data.length - 1].remove();
-              } else if (oFunks.meta.emit.data.length < nFunks.meta.emit.data.length) {
-                var el = sb.sb_CopyDeep(domChs[c].children[0]);
-                sb.sb_insertInnert(el, nFunks.meta.emit.data[p]);
-                sb.sb_addChild(domChs[c], el);
+                var oLen = oFunks.meta.emit.data.length;
+                var oList = oFunks.meta.emit.data;
+                var nLen = nFunks.meta.emit.data.length;
+                var nList = nFunks.meta.emit.data;
+
+                for (var i = 0; i < nLen; i++) {
+                  var index = oList.indexOf(nList[i]);
+
+                  if (index > -1) {
+                    oList.splice(index, 1);
+                    domChs[c].children[i].remove();
+                    break;
+                  }
+                } // domChs[c].children[oFunks.meta.emit.data.length - 1].remove()
+                // oFunks.meta.emit.data.splice(oLen - 1)
+
+              } else if (oFunks.meta.emit.data.data.length < nFunks.meta.emit.data.data.length) {
+                if (oFunks.meta.emit.data.data.length === 0) {
+                  var nE = nFunks.meta.emit;
+
+                  if (nE.hasOwnProperty('style') && nE.hasOwnProperty('children')) {
+                    console.log('The style string');
+                    var style = nE.style;
+                    var children = nE.children;
+                    console.log(style);
+                    console.log(children);
+                    this.emit({
+                      type: nE.type,
+                      data: {
+                        parent: domChs[c],
+                        data: nE.data.data,
+                        style: style,
+                        children: children
+                      }
+                    });
+                  } else if (nE.hasOwnProperty('style')) {
+                    console.log('The style string');
+                    var _style = nE.style;
+                    console.log(_style);
+                    this.emit({
+                      type: nE.type,
+                      data: {
+                        parent: domChs[c],
+                        data: nE.data.data,
+                        style: _style
+                      }
+                    });
+                  } else if (nE.hasOwnProperty('children')) {
+                    console.log('The children string');
+                    var _children = nE.children;
+                    console.log(_children);
+                    this.emit({
+                      type: nE.type,
+                      data: {
+                        parent: domChs[c],
+                        data: nE.data.data,
+                        children: _children
+                      }
+                    });
+                  } else {
+                    this.emit({
+                      type: nE.type,
+                      data: {
+                        parent: domChs[c],
+                        data: nE.data.data
+                      }
+                    });
+                  } // this.emit({type: nFunks.meta.emit.type,data: {parent: domChs[c],data: nFunks.meta.emit.data.data ,style: nFunks.meta.emit.style}})
+
+
+                  oFunks.meta.emit.data.data.push(nFunks.meta.emit.data.data[0]);
+                } else {
+                  (function () {
+                    var copyEl = sb.sb_copyDeep(domChs[c].children[0]);
+                    console.log(copyEl);
+                    console.log(sb.sb_jsToJson(copyEl));
+                    var chis = [];
+                    console.log('EL CHILDREN');
+                    console.log(sb.sb_jsToJson(copyEl));
+
+                    if (copyEl.children.length > 0) {
+                      console.log('The copyEl has children');
+
+                      for (var f = 0; f < copyEl.children.length; f++) {
+                        chis.push(copyEl.children[f]);
+                      }
+
+                      sb.sb_insertInner(copyEl, nFunks.meta.emit.data.data[nFunks.meta.emit.data.data.length - 1]);
+                    }
+
+                    chis.forEach(function (c) {
+                      sb.sb_addChild(copyEl, c);
+                    });
+                    copyEl.events = 'the event name';
+                    sb.sb_addChild(domChs[c], copyEl);
+                    console.log('copyElement after append');
+                    console.log(copyEl);
+                    oFunks.meta.emit.data.data.push(nFunks.meta.emit.data.data[nFunks.meta.emit.data.data.length - 1]);
+                  })();
+                }
               }
-            } else {}
+            }
           }
         }
 

@@ -211,20 +211,53 @@ export const addOps = function(el,ops){
 
 				// console.log('The data of emit property')
 				// console.log(ops.meta[p])
-				if(ops.meta[p].hasOwnProperty('style')){
+				if(ops.meta[p].hasOwnProperty('style') && ops.meta[p].hasOwnProperty('children')){
 
 					console.log('The style string')
 					let style = ops.meta[p].style
+					let children = ops.meta[p].children
 					console.log(style)
+					console.log(children)
 
-					this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data,style: style}})
+					this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data.data,style: style,children: children}})
+
+				}else if(ops.meta[p].hasOwnProperty('style') ){
+
+					console.log('The style string')
+					let style = ops.meta[p].style
+
+					console.log(style)
+					
+
+					this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data.data,style: style}})
+					
+
+				}else if(ops.meta[p].hasOwnProperty('children')){
+
+					console.log('The children string')
+					
+					let children = ops.meta[p].children
+					
+					console.log(children)
+
+					this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data.data,children: children}})
 
 				}else{
 
-					this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data}})
+					this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data.data}})
 
 				}
 				
+			}else if(p === 'event'){
+
+				for(let p in ops.event){
+
+					//    console.log('The data of event property')
+					//    console.log(ops.event[p])
+						 sb.sb_addEvent(el,ops.event[p].type,ops.event[p].callback)
+						 // this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data}})
+						 
+					 }
 			}
 
 			

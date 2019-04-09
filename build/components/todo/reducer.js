@@ -41,7 +41,7 @@ var _default = function _default(store, data) {
 
     case 'REMOVE_ITEM':
       {
-        presets.updateItem(self, data);
+        presets.updateItem(store, data);
       }
       break;
 

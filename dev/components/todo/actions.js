@@ -76,26 +76,18 @@ const addItem =  (store,data)=>{
     })
 }
 
-const removeItem =  (data)=>{
+const removeItem =  (store,data)=>{
 
 
    
 
-    const self = data
+    // const self = data
 
-    self.reducer({
+    store.reducer({
 
         type: types.REMOVE_ITEM,
         component: 'todo',
-        payload: {
-
-           
-            items:[
-                'psychologist',
-                'programmer',
-                'scientist'
-            ]
-        }
+        payload: {...data,task: 'remove'}
     })
 }
 

@@ -673,7 +673,14 @@ CORE.prototype.converts = function(){
 
 				return SUKU.json_to_js(json);
 
+			},
+			clone: function(c){
+
+
+				return SUKU.clone(c);
+
 			}
+
 
 	}
 

@@ -684,7 +684,37 @@ module.exports = {
 			copy_deep: function(node){
 
 
+
 				var clonedDeepNode = node.cloneNode(true);
+
+
+				
+
+				if(node.hasOwnProperty('hasEvents')){
+
+					for(let e in events){
+
+						this.ev_addHandler(clonedDeepNode,events[e].type,events[e].callback)
+					}
+				}
+
+				if(node.children.length > 0){
+
+
+					let chs = clonedDeepNode.children
+					Array.prototype.forEach.call(node.children,(c,i)=>{
+
+
+						if(c.hasOwnProperty('hasEvents')){
+
+							this.ev_addHandler(chs[i],c.events.type,c.events.callback)
+
+						}
+					
+					
+				    })
+
+			    }
 
 				return clonedDeepNode;
 				
@@ -697,6 +727,7 @@ module.exports = {
 
 				var clonedShallowNode = node.cloneNode(false);
 
+				
 				return clonedShallowNode;
 				
 
@@ -2251,6 +2282,64 @@ module.exports = {
 
 		},
 
+		clone: function(o){
+
+
+
+		  if(o instanceof Array){
+
+			let newA = []
+			o.forEach(e => {
+
+			   if(e instanceof Array){
+
+				   newA.push(this.clone(e))
+
+			   }else if(e instanceof Object){
+
+				   newA.push(this.clone(e))
+			   }else{
+
+				   newA.push(e)
+			   }
+				
+			});
+
+			return newA
+		
+		  }else if(o instanceof Object && typeof o !== 'function'){
+
+
+			let n = {}
+			for(let p in o){
+
+			   if(o[p] instanceof Array){
+
+				   n[p] = this.clone(o[p])
+			   }else if(o[p] instanceof Object && typeof o[p] !== 'function' ){
+
+				
+				   n[p] = this.clone(o[p])
+			   }else{
+
+
+					if(p === 'callback'){
+
+						console.log('The current property is callback')
+					}
+				   n[p] = o[p]
+			   }
+			   
+				
+			}
+
+			return n
+		  }
+
+					
+
+		},
+
 		/*********************************** OBJECT AND ARRAY CASTING ************************************************************/
 
 
@@ -2269,7 +2358,7 @@ module.exports = {
 					var arr = [];
 					var count = 0;
 
-					for(key in castObj){
+					for(let key in castObj){
 
 
 						arr[count] = castObj[key];

@@ -89,7 +89,10 @@ function () {
                     meta: {
                       emit: {
                         type: 'create-form',
-                        data: this.form()
+                        data: {
+                          type: 'emit',
+                          data: this.form(state)
+                        }
                       }
                     }
                   }
@@ -102,8 +105,10 @@ function () {
     }
   }, {
     key: "form",
-    value: function form() {
-      var that = this; // console.log('The form component"s form method has been invoked')
+    value: function form(state) {
+      var that = this;
+      console.log('THE STATE IN THE FORM COMPONENT FORM METHOD');
+      console.log(state); // console.log('The form component"s form method has been invoked')
       // console.log(that)
       // console.log('The value of t')
       // console.log(t)
@@ -222,6 +227,7 @@ function () {
       var p = sb.sb_getParent(e.target);
       var fm = sb.sb_getParent(p);
       var val = fm.addv.value;
+      fm.addv.value = '';
       sb.sb_preventNormal(e);
       this.parent.emit({
         type: 'action-dispatch',

@@ -122,7 +122,11 @@ class Form{
 
                             emit: {
                                 type: 'create-form',
-                                data: this.form()
+                                data: {
+
+                                    type: 'emit',
+                                    data: this.form(state)
+                                } 
                             
                             }
 
@@ -153,9 +157,12 @@ class Form{
 
 
         
-form(){
+form(state){
 
     var that = this
+
+    console.log('THE STATE IN THE FORM COMPONENT FORM METHOD')
+    console.log(state)
     // console.log('The form component"s form method has been invoked')
     // console.log(that)
       // console.log('The value of t')
@@ -341,6 +348,7 @@ addItem(e){
     var fm = sb.sb_getParent(p)
 
     var val = fm.addv.value
+    fm.addv.value = ''
 
     sb.sb_preventNormal(e)
 

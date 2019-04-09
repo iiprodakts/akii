@@ -161,16 +161,43 @@ var addOps = function addOps(el, ops) {
       if (p === 'emit') {
         // console.log('The data of emit property')
         // console.log(ops.meta[p])
-        if (ops.meta[p].hasOwnProperty('style')) {
+        if (ops.meta[p].hasOwnProperty('style') && ops.meta[p].hasOwnProperty('children')) {
           console.log('The style string');
           var style = ops.meta[p].style;
+          var children = ops.meta[p].children;
           console.log(style);
+          console.log(children);
           this.emit({
             type: ops.meta[p].type,
             data: {
               parent: el,
-              data: ops.meta[p].data,
-              style: style
+              data: ops.meta[p].data.data,
+              style: style,
+              children: children
+            }
+          });
+        } else if (ops.meta[p].hasOwnProperty('style')) {
+          console.log('The style string');
+          var _style = ops.meta[p].style;
+          console.log(_style);
+          this.emit({
+            type: ops.meta[p].type,
+            data: {
+              parent: el,
+              data: ops.meta[p].data.data,
+              style: _style
+            }
+          });
+        } else if (ops.meta[p].hasOwnProperty('children')) {
+          console.log('The children string');
+          var _children = ops.meta[p].children;
+          console.log(_children);
+          this.emit({
+            type: ops.meta[p].type,
+            data: {
+              parent: el,
+              data: ops.meta[p].data.data,
+              children: _children
             }
           });
         } else {
@@ -178,9 +205,15 @@ var addOps = function addOps(el, ops) {
             type: ops.meta[p].type,
             data: {
               parent: el,
-              data: ops.meta[p].data
+              data: ops.meta[p].data.data
             }
           });
+        }
+      } else if (p === 'event') {
+        for (var _p in ops.event) {
+          //    console.log('The data of event property')
+          //    console.log(ops.event[p])
+          sb.sb_addEvent(el, ops.event[_p].type, ops.event[_p].callback); // this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data}})
         }
       }
     }

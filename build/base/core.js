@@ -306,6 +306,9 @@ CORE.prototype.converts = function () {
     },
     jsonToJs: function jsonToJs(json) {
       return SUKU.json_to_js(json);
+    },
+    clone: function clone(c) {
+      return SUKU.clone(c);
     }
   };
 };

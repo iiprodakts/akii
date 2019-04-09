@@ -57,14 +57,14 @@ var addItem = function addItem(store, data) {
   });
 };
 
-var removeItem = function removeItem(data) {
-  var self = data;
-  self.reducer({
+var removeItem = function removeItem(store, data) {
+  // const self = data
+  store.reducer({
     type: types.REMOVE_ITEM,
     component: 'todo',
-    payload: {
-      items: ['psychologist', 'programmer', 'scientist']
-    }
+    payload: _objectSpread({}, data, {
+      task: 'remove'
+    })
   });
 };
 

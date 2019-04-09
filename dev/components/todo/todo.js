@@ -4,7 +4,7 @@ import  actions from './actions'
 import  reducer from './reducer'
 import List from './components/list'
 import Form from './components/form'
-import Count from './components/form'
+import Count from './components/count'
 
 
 class Todo{
@@ -19,7 +19,7 @@ class Todo{
     this.children = [
 
       new List(this),
-      // counter : new Count(this),
+      new Count(this),
       new Form(this)
 
     ]

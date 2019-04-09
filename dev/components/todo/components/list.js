@@ -17,8 +17,7 @@ class List{
         "save me"
       ]
     }
-    this.dt = [1,2,3,'four','five']
-
+   
 
     // this.reducers = reducers
 
@@ -32,8 +31,7 @@ class List{
     //  console.log(this.parent.emit)
      
     
-     this.dt.push(this.dt.length + 1)
-     const dt = this.dt
+     
      const trunk = this.parent.trunk
      const name = this.constructor.name.toLowerCase()
      this.parent.emit({type:'create-dom-tree',data:{
@@ -50,7 +48,7 @@ class List{
                   set:true,
                   presents:{
 
-                  class: "hr-size-fl-lg top-offset-vh-tn mg-bottom-fd-h pos-rel pd-left-fl-bt"
+                  class: "hr-size-fl-sm d-inline-block top-offset-vh-xxx-tn mg-bottom-fd-h pos-rel pd-left-fl-bt"
                  
 
                   }
@@ -195,8 +193,44 @@ class List{
 
                             emit: {
                                 type: 'create-list',
-                                data: state['todo'].list.items,
-                                style: "mg-bottom-fd-xx-tn list__item list__item list__item--ve list__item--border-bottom-secondary list__item--marg-offset-bottom-small"
+                                data: {
+                                  type: 'datum',
+                                  data: state['todo'].list.items,
+                                },
+                                style: "mg-bottom-fd-xx-tn list__item list__item list__item--ve list__item--border-bottom-secondary list__item--marg-offset-bottom-small",
+                                children: [
+
+                                  {
+
+                                    element: 'button',
+                                    props: {
+                    
+                                      presentational: {
+                                          set: true,
+                                          presents: {
+                                              class: "font-fd-xx-tn fg-red",
+                                              content: "x"
+                                            
+                                          }
+                                      },
+                    
+                                      functional:{
+                    
+                                        set: true,
+                                        event: {
+        
+                                            click:{
+        
+                                                type: 'click',
+                                                callback: this.removeItem.bind(this)
+                                            }
+                                        }
+                                        
+                                      }
+                                    }
+
+                                  }
+                                ]
                             }
 
                           }
@@ -222,6 +256,52 @@ class List{
 
 }})
 
+  }
+
+  removeItem(e){
+
+   
+    console.log('THE REMOVE ITEM EVENT HAS OCCURED')
+  
+  
+      var sb = this.parent.sb
+      var btn = e.target
+      var li = sb.sb_getParent(btn)
+      var ul = sb.sb_getParent(li)
+      var index = 0
+
+      console.log(ul.children.length)
+
+      for(let c = 0; c < ul.children.length; c++){
+
+        if(ul.children[c] === li){
+
+          console.log('The current list index')
+          console.log(c)
+
+          index = c
+          break;
+        }
+      }
+
+      var val = index
+  
+      sb.sb_preventNormal(e)
+  
+      this.parent.emit({type: 'action-dispatch',data: {
+  
+        type: 'REMOVE_ITEM',
+        component: 'todo',
+        data: {
+  
+          id: 'list',
+          payload: val
+        }
+  
+      }})
+  
+  
+      
   }
 
   
