@@ -679,6 +679,10 @@ CORE.prototype.converts = function(){
 
 				return SUKU.clone(c);
 
+			},
+			objectToArray: function(o){
+
+				return SUKU.object_to_array(o)
 			}
 
 

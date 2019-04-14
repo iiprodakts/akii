@@ -39,16 +39,35 @@ var handleCreateList = function handleCreateList(data) {
 exports.handleCreateList = handleCreateList;
 
 var createList = function createList(data) {
+  var _this = this;
+
   console.log('THE LIST DATA');
   console.log(data);
   var sb = this.sb;
   var descends = [];
 
+  var _loop = function _loop(d) {
+    var eli = _this.create('li');
+
+    if (data.hasOwnProperty('presents')) {
+      for (var p in data.presents) {
+        sb.sb_addProperty(eli, p, data.presents[p]);
+      }
+    }
+
+    descends.push(eli); // console.log('The li elemnt before children')
+    // console.log(sb.sb_jsToJson(eli.textContent))
+
+    data.hasOwnProperty('children') ? _this.createChildren(eli, data.children, data.data[d]).forEach(function (le) {
+      sb.sb_addChild(eli, le);
+      eli.empty = undefined;
+    }) : sb.sb_insertInner(eli, data.data[d]); // console.log('The li elemnt after children processsing')
+    // console.log(sb.sb_jsToJson(eli.textContent))
+    // eli.textContent = ''
+  };
+
   for (var d = 0; d < data.data.length; d++) {
-    var el = this.create('li');
-    sb.sb_insertInner(el, data.data[d]);
-    descends.push(el);
-    data.hasOwnProperty('children') ? this.createChildren(el, data.children) : '';
+    _loop(d);
   }
 
   this.addChildren(data.parent, descends);
@@ -56,7 +75,7 @@ var createList = function createList(data) {
 
 exports.createList = createList;
 
-var create = function create(name, props, ops) {
+var create = function create(name, props, ops, data) {
   // console.log('Create')
   // console.log(props)
   var sb = this.sb;
@@ -64,7 +83,13 @@ var create = function create(name, props, ops) {
 
   if (props) {
     var _sb = this.sb;
-    el = this.addProps(this.addOps(_sb.sb_createElement(name), ops), props); //  var el = this.addProps(el,props.presentational)
+
+    if (data) {
+      el = this.addProps(this.addOps(_sb.sb_createElement(name), ops), props, data);
+    } else {
+      el = this.addProps(this.addOps(_sb.sb_createElement(name), ops), props);
+    } //  var el = this.addProps(el,props.presentational)
+
   } else {
     el = sb.sb_createElement(name);
   }
@@ -74,24 +99,23 @@ var create = function create(name, props, ops) {
 
 exports.create = create;
 
-var createChildren = function createChildren(root, children) {
+var createChildren = function createChildren(root, children, data) {
   var sb = this.sb;
   var descends = [];
 
   for (var c = 0; c < children.length; c++) {
-    var e = children[c]; // console.log('The current child props property')
-    // console.log(e.props)
+    var e = children[c]; // console.log('THE CURRENT CHILD PROPERTY')
+    // console.log(e)
 
-    var el = this.create(e.element, e.props.presentational, e.props.functional);
+    var el = this.create(e.element, e.props.presentational, e.props.functional, data);
 
     if (e.children) {
-      console.log('The current element has children');
-      console.log(e.children);
-      sb.sb_addChild(root, el);
+      // console.log('The current element has children')
+      // console.log(e.children)
+      // sb.sb_addChild(root,el)
       this.createChildren(el, e.children);
-    } else {
-      console.log('The last innermost element has no children');
-      sb.sb_addChild(root, el);
+    } else {// console.log('The last innermost element has no children')
+      // sb.sb_addChild(root,el)
     }
 
     descends.push(el);
@@ -123,13 +147,24 @@ var addChildren = function addChildren(parent, children) {
 exports.addChildren = addChildren;
 
 var addProps = function addProps(el, props) {
+  var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
   var sb = this.sb; //    console.log('ADD PROPS')
   //    console.log(props)
-  //    console.log(el)
+  // console.log('The value of el')
+  // console.log(el)
 
   if (props.set) {
+    if (data) {
+      if (!props.presents.hasOwnProperty('content')) {
+        // console.log('The Value of EL IN PRES OPS')
+        // console.log(el)
+        sb.sb_insertInner(el, data);
+      }
+    }
+
     for (var p in props.presents) {
       if (p === 'content') {
+        //  console.log('The value INNN')
         sb.sb_insertInner(el, props.presents[p]);
       } else {
         sb.sb_addProperty(el, p, props.presents[p]);
@@ -148,25 +183,24 @@ var addOps = function addOps(el, ops) {
   // console.log(el)
 
   if (ops.set) {
-    console.log('THE ADD OPPS IS SET');
-    console.log(el);
-    console.log(ops);
-
+    // console.log('THE ADD OPPS IS SET')
+    // console.log(el)
+    // console.log(ops)
     if (ops.hasOwnProperty('meta')) {
       for (var p in ops.meta) {
         if (p === 'emit') {
           // console.log('The data of emit property')
           // console.log(ops.meta[p])
-          if (ops.meta[p].hasOwnProperty('style')) {
+          if (ops.meta[p].hasOwnProperty('presents')) {
             console.log('The style string');
-            var style = ops.meta[p].style;
+            var presents = ops.meta[p].presents;
             console.log(style);
             this.emit({
               type: ops.meta[p].type,
               data: {
                 parent: el,
                 data: ops.meta[p].data,
-                style: style
+                presents: presents
               }
             });
           } else {

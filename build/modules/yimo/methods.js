@@ -3,19 +3,12 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-<<<<<<< HEAD
-exports.connectToStore = exports.handleConnectToStore = exports.reducer = exports.dispatch = exports.connect = exports.emit = exports.listens = exports.init = void 0;
-=======
 exports.rem = exports.unload = exports.initState = exports.supubEmit = exports.supubListen = exports.actionDispatch = exports.handleActionDispatch = exports.subscribeToStore = exports.handleSubscribeToStore = exports.connectToStore = exports.handleConnectToStore = exports.setState = exports.reducer = exports.dispatch = exports.connect = exports.emit = exports.listens = exports.init = void 0;
->>>>>>> development
 
 var init = function init() {
   console.log('Store has been initialised');
   this.listens();
-<<<<<<< HEAD
-=======
   this.unload();
->>>>>>> development
 };
 
 exports.init = init;
@@ -23,14 +16,9 @@ exports.init = init;
 var listens = function listens() {
   var sb = this.sb;
   sb.sb_notifyListen({
-<<<<<<< HEAD
-    //  'store-notify-listen': this.handleStoreNotifyListen.bind(this),
-    'connect-to-store': this.handleConnectToStore.bind(this) //  'action-dispatch': this.handleActionDispatch.bind(this)
-=======
     'subscribe-to-store': this.handleSubscribeToStore.bind(this),
     'connect-to-store': this.handleConnectToStore.bind(this),
     'action-dispatch': this.handleActionDispatch.bind(this) //  'action-dispatch': this.handleActionDispatch.bind(this)
->>>>>>> development
 
   }, sb.moduleMeta.moduleId, sb.moduleMeta.modInstId);
 };
@@ -52,14 +40,6 @@ var connect = function connect(data) {
 
   if (data.hasOwnProperty('component')) {
     if (data.hasOwnProperty('actions')) {
-<<<<<<< HEAD
-      if (data.hasOwnProperty('reducers')) {
-        self.actions[data.component] = data.actions;
-        self.reducers[data.component] = data.reducers;
-        console.log('The current reducers and actions');
-        console.log(self.actions);
-        console.log(self.reducers);
-=======
       if (data.hasOwnProperty('reducer')) {
         self.actions[data.component] = [];
         self.reducers[data.component] = {};
@@ -98,7 +78,6 @@ var connect = function connect(data) {
         // console.log(self.actions)
         // console.log(self.reducers)
 
->>>>>>> development
       } else {
         console.log('Yimo requires component reducers for component state');
       }
@@ -113,9 +92,6 @@ var connect = function connect(data) {
 exports.connect = connect;
 
 var dispatch = function dispatch(data) {
-<<<<<<< HEAD
-  var self = this;
-=======
   var self = this; //  console.log('self.actions')
   //  console.log(self.actions)
   //  console.log(data)
@@ -145,15 +121,10 @@ var dispatch = function dispatch(data) {
       break;
     }
   }
->>>>>>> development
 };
 
 exports.dispatch = dispatch;
 
-<<<<<<< HEAD
-var reducer = function reducer(action, payload) {
-  var self = this;
-=======
 var reducer = function reducer(data) {
   var self = this;
 
@@ -173,16 +144,10 @@ var reducer = function reducer(data) {
       }
     }
   }
->>>>>>> development
 };
 
 exports.reducer = reducer;
 
-<<<<<<< HEAD
-var handleConnectToStore = function handleConnectToStore(data) {
-  console.log('HANDLE ConnectToStore event has occured');
-  console.log(data);
-=======
 var setState = function setState(component, data) {
   // console.log('THE SET STATE FUNCTION HAS BEEN INVOKED')
   // console.log('The COMPONENT NAME')
@@ -228,21 +193,12 @@ exports.setState = setState;
 var handleConnectToStore = function handleConnectToStore(data) {
   // console.log('HANDLE ConnectToStore event has occured')
   // console.log(data)
->>>>>>> development
   this.connectToStore(data);
 };
 
 exports.handleConnectToStore = handleConnectToStore;
 
 var connectToStore = function connectToStore(data) {
-<<<<<<< HEAD
-  console.log('HANDLE ConnectToStore event has occured');
-  console.log(data);
-  this.connect(data);
-};
-
-exports.connectToStore = connectToStore;
-=======
   // console.log('HANDLE ConnectToStore event has occured')
   // console.log(data)
   this.connect(data);
@@ -343,4 +299,3 @@ var rem = function rem(e) {
 };
 
 exports.rem = rem;
->>>>>>> development

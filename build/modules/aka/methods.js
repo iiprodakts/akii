@@ -44,14 +44,32 @@ exports.handleCreateDomTree = handleCreateDomTree;
 
 var createDomTree = function createDomTree(data) {
   //   var dom = null
-  console.log('Data custom parent');
-  console.log(data);
-  var sb = this.sb;
-  var trunk = data.trunk;
-  var vd = data.vd.children;
-  var rootName = vd.element;
-  console.log('The vd ');
-  console.log(vd); // var branch = data[rootName].name
+  // console.log('Data custom parent')
+  // console.log(data)
+  if (!data.hasOwnProperty('trunk') && data.hasOwnProperty('vd')) {
+    throw new Error('');
+  } else {
+    var sb = this.sb;
+    var trunk = data.trunk;
+    var vd = data.vd.children;
+    var rootName = vd.element;
+    var root = this.create(rootName, vd.vd.props.presentational, vd.vd.props.functional);
+    var children = this.createChildren(root, vd.vd.children);
+    root = this.addChildren(root, children);
+    sb.sb_addChild(trunk, root);
+    this.domTreeCreated({
+      trunk: trunk,
+      domId: {
+        view: data.vd.view,
+        children: [{
+          name: vd.name,
+          dom: root
+        }]
+      }
+    });
+  } // console.log('The vd ')
+  // console.log(vd)
+  // var branch = data[rootName].name
   // var custom = `data-${trunk.id.toLowerCase()}`
   // var dataChildCustom = `${dataParentCustom}-${branch.toLowerCase()}`
   // console.log('Data custom parent')
@@ -60,22 +78,8 @@ var createDomTree = function createDomTree(data) {
   // console.log(`${dataChildCustom}`)
   // console.log(branch)
   //   console.log(rootName)
+  //   var root = this.addChildren(root,childr)
 
-  var root = this.create(rootName, vd.vd.props.presentational, vd.vd.props.functional);
-  var children = this.createChildren(root, vd.vd.children);
-  var root = this.addChildren(root, children);
-  sb.sb_addChild(trunk, root); //   var root = this.addChildren(root,children)
-
-  this.domTreeCreated({
-    trunk: trunk,
-    domId: {
-      view: data.vd.view,
-      children: [{
-        name: vd.name,
-        dom: root
-      }]
-    }
-  });
 };
 
 exports.createDomTree = createDomTree;
@@ -161,31 +165,31 @@ var addOps = function addOps(el, ops) {
       if (p === 'emit') {
         // console.log('The data of emit property')
         // console.log(ops.meta[p])
-        if (ops.meta[p].hasOwnProperty('style') && ops.meta[p].hasOwnProperty('children')) {
+        if (ops.meta[p].hasOwnProperty('presents') && ops.meta[p].hasOwnProperty('children')) {
           console.log('The style string');
-          var style = ops.meta[p].style;
+          var presents = ops.meta[p].presents;
           var children = ops.meta[p].children;
-          console.log(style);
+          console.log(presents);
           console.log(children);
           this.emit({
             type: ops.meta[p].type,
             data: {
               parent: el,
               data: ops.meta[p].data.data,
-              style: style,
+              presents: presents,
               children: children
             }
           });
-        } else if (ops.meta[p].hasOwnProperty('style')) {
+        } else if (ops.meta[p].hasOwnProperty('presents')) {
           console.log('The style string');
-          var _style = ops.meta[p].style;
-          console.log(_style);
+          var _presents = ops.meta[p].presents;
+          console.log(_presents);
           this.emit({
             type: ops.meta[p].type,
             data: {
               parent: el,
               data: ops.meta[p].data.data,
-              style: _style
+              presents: _presents
             }
           });
         } else if (ops.meta[p].hasOwnProperty('children')) {

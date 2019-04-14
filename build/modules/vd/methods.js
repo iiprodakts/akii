@@ -85,9 +85,9 @@ exports.beginDomiks = beginDomiks;
 
 var checkVD = function checkVD(data) {
   var sb = this.sb;
-  var vod = this.virtualDom; // console.log('The Virtual Dom Testing console')
-  // console.log(data)
-  // console.log(sb.sb_jsToJson(this.virtualDom))
+  var vod = this.virtualDom;
+  console.log('The Virtual Dom Testing console');
+  console.log(data); // console.log(sb.sb_jsToJson(this.virtualDom))
   // console.log('The length of vod')
   // console.log(this.virtualDom.length)
 
@@ -147,7 +147,7 @@ var checkVD = function checkVD(data) {
         }
 
         break;
-      } else if (c === vd.length - 1) {
+      } else if (c === vod.length - 1) {
         vod.push({
           view: data.trunk.id,
           children: [{
@@ -156,10 +156,14 @@ var checkVD = function checkVD(data) {
             vd: sb.sb_clone(data[Object.keys(data)[2]])
           }]
         });
+        console.log('The object from clone');
+        console.log(sb.sb_clone(data[Object.keys(data)[2]]));
 
         var _index = vod.length - 1; // this.createDomTree({vd:vd[c].children,trunk: data.trunk})
 
 
+        console.log('The structure of VOD BEFORE DOM CREATION');
+        console.log(vod);
         this.createDomTree({
           vd: {
             view: vod[_index].view,
@@ -314,31 +318,31 @@ var childDiff = function childDiff(oldChs, newChs, domChs) {
                 if (oFunks.meta.emit.data.data.length === 0) {
                   var nE = nFunks.meta.emit;
 
-                  if (nE.hasOwnProperty('style') && nE.hasOwnProperty('children')) {
+                  if (nE.hasOwnProperty('presents') && nE.hasOwnProperty('children')) {
                     console.log('The style string');
-                    var style = nE.style;
+                    var presents = nE.presents;
                     var children = nE.children;
-                    console.log(style);
+                    console.log(presents);
                     console.log(children);
                     this.emit({
                       type: nE.type,
                       data: {
                         parent: domChs[c],
                         data: nE.data.data,
-                        style: style,
+                        presents: presents,
                         children: children
                       }
                     });
-                  } else if (nE.hasOwnProperty('style')) {
+                  } else if (nE.hasOwnProperty('presents')) {
                     console.log('The style string');
-                    var _style = nE.style;
-                    console.log(_style);
+                    var _presents = nE.presents;
+                    console.log(_presents);
                     this.emit({
                       type: nE.type,
                       data: {
                         parent: domChs[c],
                         data: nE.data.data,
-                        style: _style
+                        presents: _presents
                       }
                     });
                   } else if (nE.hasOwnProperty('children')) {
@@ -367,27 +371,42 @@ var childDiff = function childDiff(oldChs, newChs, domChs) {
                   oFunks.meta.emit.data.data.push(nFunks.meta.emit.data.data[0]);
                 } else {
                   (function () {
-                    var copyEl = sb.sb_copyDeep(domChs[c].children[0]);
-                    console.log(copyEl);
-                    console.log(sb.sb_jsToJson(copyEl));
-                    var chis = [];
-                    console.log('EL CHILDREN');
-                    console.log(sb.sb_jsToJson(copyEl));
+                    var copyEl = sb.sb_copyDeep(domChs[c].children[0]); // console.log('The copy el')
+                    // console.log(copyEl)
+                    // console.log(sb.sb_jsToJson(copyEl))
+                    // console.log('EL CHILDREN')
+                    // console.log(sb.sb_jsToJson(copyEl))
 
                     if (copyEl.children.length > 0) {
+                      var chis = [];
                       console.log('The copyEl has children');
 
-                      for (var f = 0; f < copyEl.children.length; f++) {
-                        chis.push(copyEl.children[f]);
-                      }
+                      if (copyEl.empty === undefined) {
+                        for (var f = 0; f < copyEl.children.length; f++) {
+                          console.log('The presents content');
+                          console.log(nFunks.meta.emit.children[f].props.presentational.presents);
 
+                          if (nFunks.meta.emit.children[f].props.presentational.presents.hasOwnProperty('content')) {
+                            sb.sb_insertInner(copyEl.children[f], nFunks.meta.emit.children[f].props.presentational.presents.content);
+                            chis.push(copyEl.children[f]);
+                          } else {
+                            sb.sb_insertInner(copyEl.children[f], nFunks.meta.emit.data.data[nFunks.meta.emit.data.data.length - 1]);
+                            chis.push(copyEl.children[f]);
+                          }
+                        }
+
+                        chis.forEach(function (c) {
+                          sb.sb_addChild(copyEl, c);
+                        });
+                      } else {
+                        console.log('The textContent is not empty');
+                        console.log(sb.sb_jsToJson(copyEl.textContent));
+                        sb.sb_insertInner(copyEl, nFunks.meta.emit.data.data[nFunks.meta.emit.data.data.length - 1]);
+                      }
+                    } else {
                       sb.sb_insertInner(copyEl, nFunks.meta.emit.data.data[nFunks.meta.emit.data.data.length - 1]);
                     }
 
-                    chis.forEach(function (c) {
-                      sb.sb_addChild(copyEl, c);
-                    });
-                    copyEl.events = 'the event name';
                     sb.sb_addChild(domChs[c], copyEl);
                     console.log('copyElement after append');
                     console.log(copyEl);

@@ -51,16 +51,49 @@ export const createDomTree = function(data){
 	  
 	//   var dom = null
 
-	console.log('Data custom parent')
-	console.log(data)
+	// console.log('Data custom parent')
+	// console.log(data)
 
-	const sb = this.sb
-	var trunk = data.trunk
-	const vd = data.vd.children
-	var rootName = vd.element
+	if(!(data.hasOwnProperty('trunk')) && (data.hasOwnProperty('vd'))){
 
-	console.log('The vd ')
-	console.log(vd)
+		throw new Error('')
+		
+	}else{
+
+
+		const sb = this.sb
+		const trunk = data.trunk
+		const vd = data.vd.children
+		const rootName = vd.element
+
+		let root = this.create(rootName,vd.vd.props.presentational,vd.vd.props.functional)
+		const children = this.createChildren(root,vd.vd.children)
+		root = this.addChildren(root,children)
+		sb.sb_addChild(trunk,root)
+
+		this.domTreeCreated({trunk: trunk,domId:{
+
+			view: data.vd.view,
+			children: [
+  
+			  {
+
+			  name: vd.name,
+			  dom: root
+			  
+			  }
+  
+		 ]}})
+  
+
+	}
+
+
+
+	
+
+	// console.log('The vd ')
+	// console.log(vd)
 	// var branch = data[rootName].name
 	// var custom = `data-${trunk.id.toLowerCase()}`
 	// var dataChildCustom = `${dataParentCustom}-${branch.toLowerCase()}`
@@ -72,25 +105,11 @@ export const createDomTree = function(data){
 	// console.log(branch)
 	//   console.log(rootName)
 
-	  var root = this.create(rootName,vd.vd.props.presentational,vd.vd.props.functional)
-	  var children = this.createChildren(root,vd.vd.children)
-	  var root = this.addChildren(root,children)
-	   sb.sb_addChild(trunk,root)
-	//   var root = this.addChildren(root,children)
+	 
+	//   var root = this.addChildren(root,childr)
 
 
-	   this.domTreeCreated({trunk: trunk,domId:{
-
-		  view: data.vd.view,
-		  children: [
-
-			{
-			name: vd.name,
-			dom: root
-		   }
-
-	   ]}})
-
+	
 }
 
 export const create = function(name,props,ops){
@@ -211,25 +230,25 @@ export const addOps = function(el,ops){
 
 				// console.log('The data of emit property')
 				// console.log(ops.meta[p])
-				if(ops.meta[p].hasOwnProperty('style') && ops.meta[p].hasOwnProperty('children')){
+				if(ops.meta[p].hasOwnProperty('presents') && ops.meta[p].hasOwnProperty('children')){
 
 					console.log('The style string')
-					let style = ops.meta[p].style
+					let presents = ops.meta[p].presents
 					let children = ops.meta[p].children
-					console.log(style)
+					console.log(presents)
 					console.log(children)
 
-					this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data.data,style: style,children: children}})
+					this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data.data,presents: presents,children: children}})
 
-				}else if(ops.meta[p].hasOwnProperty('style') ){
+				}else if(ops.meta[p].hasOwnProperty('presents') ){
 
 					console.log('The style string')
-					let style = ops.meta[p].style
+					let presents = ops.meta[p].presents
 
-					console.log(style)
+					console.log(presents)
 					
 
-					this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data.data,style: style}})
+					this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data.data,presents: presents}})
 					
 
 				}else if(ops.meta[p].hasOwnProperty('children')){

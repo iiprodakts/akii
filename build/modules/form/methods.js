@@ -34,6 +34,8 @@ exports.emit = emit;
 
 var handleCreateForm = function handleCreateForm(data) {
   // var sb = this.sb 
+  console.log('The form data');
+  console.log(data);
   this.createForm(data);
 };
 

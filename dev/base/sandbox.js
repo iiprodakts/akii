@@ -407,6 +407,10 @@ SANDBOX.prototype.create = function(moduleID,modInstId){
 
 				
 				return converts.clone(c);
+			},
+			sb_objectToArray: function(o){
+
+				return converts.objectToArray(o)
 			}
 
 

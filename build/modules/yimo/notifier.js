@@ -17,30 +17,14 @@ function () {
   function Notifier() {
     _classCallCheck(this, Notifier);
 
-<<<<<<< HEAD
-    this.events = {};
-=======
     this.evs = {};
     this.listen = listen;
     this.emit = emit;
     console.log('THE NOTIFIER EXECUTES');
->>>>>>> development
   }
 
   _createClass(Notifier, [{
     key: "listen",
-<<<<<<< HEAD
-    value: function listen(evt, callback) {
-      this.events[evt] = callback;
-    }
-  }, {
-    key: "emit",
-    value: function emit(evt) {
-      var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-      if (this.events.hasOwnProperty(evt)) {
-        this.events[evt](data);
-=======
     value: function listen(evt, data) {
       self = this;
       console.log('THE NOTIFIER LISTEN');
@@ -68,7 +52,6 @@ function () {
           console.log(self.state);
           break;
         }
->>>>>>> development
       }
     }
   }]);

@@ -614,21 +614,26 @@ export const build = function(){
 //   console.log(funks)
 
    this.trunk = this.createTrunk()
-   const name = this.constructor.name
+   const name = this.constructor.name.toLowerCase()
 
-this.emit({type: 'action-dispatch',data: {
+   console.log('The componetn name')
+   console.log(name)
+   console.log(self.trunk)
 
-    type: 'TEST_TYPE',
-    component: 'home'
-}})
+// this.emit({type: 'action-dispatch',data: {
+
+//     type: 'TEST_TYPE',
+//     component: 'home'
+// }})
 
 
  this.emit({type:'create-dom-tree',data:{
 
        trunk: self.trunk,
+       name:name,
        main:{
            
-        //    name:name,
+         
            props: {
 
                presentational:{
@@ -776,7 +781,11 @@ this.emit({type: 'action-dispatch',data: {
 
                                      emit: {
                                          type: 'create-form',
-                                         data: this.functions().form(evs)
+                                         data: {
+
+                                            type: 'emit',
+                                            data: self.functions().form(evs)
+                                        } 
                                      }
 
                                    }

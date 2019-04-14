@@ -51,10 +51,34 @@ export const createList = function(data){
 		for(let d = 0; d < data.data.length; d++){
 
 
-				let el = this.create('li')
-				sb.sb_insertInner(el,data.data[d])
-				descends.push(el)
-				data.hasOwnProperty('children') ? this.createChildren(el,data.children): ''
+				let eli = this.create('li')
+			
+				
+				if(data.hasOwnProperty('presents')){
+
+						for(let p in data.presents){
+
+							sb.sb_addProperty(eli,p,data.presents[p])
+						}
+				}
+
+				descends.push(eli)
+				// console.log('The li elemnt before children')
+				// console.log(sb.sb_jsToJson(eli.textContent))
+				data.hasOwnProperty('children') ? 
+				this.createChildren(eli,data.children,data.data[d]).forEach( le => {
+					
+					sb.sb_addChild(eli,le)
+
+					eli.empty = undefined
+
+				})
+				: sb.sb_insertInner(eli,data.data[d])
+
+				// console.log('The li elemnt after children processsing')
+				// console.log(sb.sb_jsToJson(eli.textContent))
+				// eli.textContent = ''
+			
 
 		}
 
@@ -63,7 +87,7 @@ export const createList = function(data){
 
 }
 
-export const create = function(name,props,ops){
+export const create = function(name,props,ops,data){
 
 	// console.log('Create')
 	// console.log(props)
@@ -73,7 +97,18 @@ export const create = function(name,props,ops){
 
 
 		let sb = this.sb  
-		el = this.addProps(this.addOps(sb.sb_createElement(name),ops),props)
+
+		if(data){
+
+			
+			el = this.addProps(this.addOps(sb.sb_createElement(name),ops),props,data)
+
+		}else{
+
+			
+			el = this.addProps(this.addOps(sb.sb_createElement(name),ops),props)
+
+		}
 		//  var el = this.addProps(el,props.presentational)
 
 	}else{
@@ -89,7 +124,7 @@ export const create = function(name,props,ops){
 
 }
 
-export const createChildren = function(root,children){
+export const createChildren = function(root,children,data){
 	  
 	
 
@@ -101,23 +136,24 @@ export const createChildren = function(root,children){
 	for(let c=0; c < children.length; c++){
 
 		var e = children[c]
-		// console.log('The current child props property')
-		// console.log(e.props)
-		var el = this.create(e.element,e.props.presentational,e.props.functional)
+	  // console.log('THE CURRENT CHILD PROPERTY')
+		// console.log(e)
+		var el = this.create(e.element,e.props.presentational,e.props.functional,data)
+
+		
 
 		if(e.children){
 
-			console.log('The current element has children')
-			console.log(e.children)
-			sb.sb_addChild(root,el)
+			// console.log('The current element has children')
+			// console.log(e.children)
+			// sb.sb_addChild(root,el)
 			this.createChildren(el,e.children)
 
 
 		}else{
 
-			console.log('The last innermost element has no children')
-			sb.sb_addChild(root,el)
-
+			// console.log('The last innermost element has no children')
+			// sb.sb_addChild(root,el)
 		}
 
 		descends.push(el)
@@ -155,21 +191,37 @@ export const addChildren = function(parent,children){
 
 }
 
-export const addProps = function(el,props){
+export const addProps = function(el,props,data=null){
 	 
 	 
    var sb = this.sb
 
 //    console.log('ADD PROPS')
 //    console.log(props)
-//    console.log(el)
+    // console.log('The value of el')
+    // console.log(el)
    
    if(props.set){
+
+
+		 if(data){
+			 
+				if(!props.presents.hasOwnProperty('content')){
+
+					// console.log('The Value of EL IN PRES OPS')
+					// console.log(el)
+					sb.sb_insertInner(el,data)
+
+				}
+
+		 }
+
 
 	   for(let p in props.presents){
 
 		   if(p === 'content'){
 
+				//  console.log('The value INNN')
 			   sb.sb_insertInner(el,props.presents[p])
 		   }else{
 
@@ -197,9 +249,9 @@ export const addOps = function(el,ops){
 	
 	if(ops.set){
 
-		console.log('THE ADD OPPS IS SET')
-		console.log(el)
-		console.log(ops)
+		// console.log('THE ADD OPPS IS SET')
+		// console.log(el)
+		// console.log(ops)
 
 
 		if(ops.hasOwnProperty('meta')){
@@ -211,13 +263,13 @@ export const addOps = function(el,ops){
 					// console.log('The data of emit property')
 					// console.log(ops.meta[p])
 					
-					if(ops.meta[p].hasOwnProperty('style')){
+					if(ops.meta[p].hasOwnProperty('presents')){
 	
 						console.log('The style string')
-						let style = ops.meta[p].style
+						let presents = ops.meta[p].presents
 						console.log(style)
 	
-						this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data,style: style}})
+						this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data,presents: presents}})
 	
 					}else{
 	

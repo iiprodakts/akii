@@ -101,8 +101,8 @@ export const checkVD = function(data){
    
    var sb = this.sb
    var vod = this.virtualDom 
-   // console.log('The Virtual Dom Testing console')
-   // console.log(data)
+    console.log('The Virtual Dom Testing console')
+    console.log(data)
    // console.log(sb.sb_jsToJson(this.virtualDom))
    // console.log('The length of vod')
    // console.log(this.virtualDom.length)
@@ -177,7 +177,7 @@ export const checkVD = function(data){
 
             break
 
-         }else if(c === vd.length - 1){
+         }else if(c === vod.length - 1){
 
 
             vod.push({
@@ -196,8 +196,13 @@ export const checkVD = function(data){
    
             })
 
+            console.log('The object from clone')
+            console.log(sb.sb_clone(data[Object.keys(data)[2]]))
+
             let index = vod.length - 1
             // this.createDomTree({vd:vd[c].children,trunk: data.trunk})
+            console.log('The structure of VOD BEFORE DOM CREATION')
+            console.log(vod)
             this.createDomTree({vd:{view: vod[index].view,children: vod[index].children[0]},trunk: data.trunk})
 
          }
@@ -341,6 +346,7 @@ export const childDiff = function(oldChs,newChs,domChs){
                       console.log(oFunks.meta.emit.data)
                       console.log(nFunks.meta.emit.data)
 
+
                      if(oFunks.meta.emit.data.data.length === nFunks.meta.emit.data.data.length){
 
                         console.log('The two arrays reference the same object in memory')
@@ -401,43 +407,42 @@ export const childDiff = function(oldChs,newChs,domChs){
 
                            let nE = nFunks.meta.emit
 
-                           if(nE.hasOwnProperty('style') && nE.hasOwnProperty('children')){
+                            if(nE.hasOwnProperty('presents') && nE.hasOwnProperty('children')){
 
                               console.log('The style string')
-                              let style = nE.style
+                              let presents = nE.presents
                               let children = nE.children
-                              console.log(style)
+                              console.log(presents)
                               console.log(children)
-               
-                              this.emit({type: nE.type,data: {parent: domChs[c],data: nE.data.data,style: style,children: children}})
-               
-                           }else if(nE.hasOwnProperty('style') ){
-               
+                      
+                              this.emit({type: nE.type,data: {parent: domChs[c],data: nE.data.data,presents: presents,children: children}})
+                      
+                            }else if(nE.hasOwnProperty('presents') ){
+                      
                               console.log('The style string')
-                              let style = nE.style
-               
-                              console.log(style)
+                              let presents = nE.presents
+                      
+                              console.log(presents)
                               
-               
-                              this.emit({type: nE.type,data: {parent: domChs[c],data: nE.data.data,style: style}})
+                      
+                              this.emit({type: nE.type,data: {parent:  domChs[c],data: nE.data.data,presents: presents}})
                               
-               
-                           }else if(nE.hasOwnProperty('children')){
-               
+                      
+                            }else if(nE.hasOwnProperty('children')){
+                      
                               console.log('The children string')
                               
                               let children = nE.children
                               
                               console.log(children)
-               
-                              this.emit({type: nE.type,data: {parent: domChs[c],data: nE.data.data,children: children}})
-               
-                           }else{
-               
-                              this.emit({type: nE.type,data: {parent: domChs[c],data: nE.data.data}})
-               
-                           }
-
+                      
+                              this.emit({type: nE.type,data: {parent:  domChs[c],data: nE.data.data,children: children}})
+                      
+                            }else{
+                      
+                              this.emit({type: nE.type,data: {parent:  domChs[c],data: nE.data.data}})
+                      
+                             }
                            // this.emit({type: nFunks.meta.emit.type,data: {parent: domChs[c],data: nFunks.meta.emit.data.data ,style: nFunks.meta.emit.style}})
                            oFunks.meta.emit.data.data.push(nFunks.meta.emit.data.data[0])
 
@@ -445,29 +450,67 @@ export const childDiff = function(oldChs,newChs,domChs){
                            
                         
                               let copyEl = sb.sb_copyDeep(domChs[c].children[0])
-                              console.log(copyEl)
-                              console.log(sb.sb_jsToJson(copyEl))
-                              let chis = []
 
-                              console.log('EL CHILDREN')
-                              console.log(sb.sb_jsToJson(copyEl))
+                              // console.log('The copy el')
+                              // console.log(copyEl)
+                              // console.log(sb.sb_jsToJson(copyEl))
+                            
+                              // console.log('EL CHILDREN')
+                              // console.log(sb.sb_jsToJson(copyEl))
                               if(copyEl.children.length > 0){
 
+                                 let chis = []
                                  console.log('The copyEl has children')
-                                 for(let f = 0; f < copyEl.children.length; f++){
 
-                                    chis.push(copyEl.children[f])
+                                 if(copyEl.empty === undefined){
+
+                                    
+                                    for(let f = 0; f < copyEl.children.length; f++){
+
+                                       console.log('The presents content')
+
+                                       console.log(nFunks.meta.emit.children[f].props.presentational.presents)
+
+                                       if(nFunks.meta.emit.children[f].props.presentational.presents.hasOwnProperty('content')){
+
+                                          sb.sb_insertInner(copyEl.children[f],nFunks.meta.emit.children[f].props.presentational.presents.content)
+                                          chis.push(copyEl.children[f])
+
+                                        
+
+                                       }else{
+
+                                          sb.sb_insertInner(copyEl.children[f],nFunks.meta.emit.data.data[nFunks.meta.emit.data.data.length - 1])
+                                          chis.push(copyEl.children[f])
+                                        
+
+                                       }
+                                      
+                                    }
+
+                                    chis.forEach(c =>{
+
+                                       sb.sb_addChild(copyEl,c)
+   
+                                    })
+
+                                 }else{
+
+                                    console.log('The textContent is not empty')
+                                    console.log(sb.sb_jsToJson(copyEl.textContent))
+                                    sb.sb_insertInner(copyEl,nFunks.meta.emit.data.data[nFunks.meta.emit.data.data.length - 1])
+
                                  }
+                                
+
+                              }else{
+
                                  sb.sb_insertInner(copyEl,nFunks.meta.emit.data.data[nFunks.meta.emit.data.data.length - 1])
 
                               }
                            
-                              chis.forEach(c =>{
-
-                                    sb.sb_addChild(copyEl,c)
-
-                              })
-                              copyEl.events = 'the event name'
+                              
+                     
                            
                               sb.sb_addChild(domChs[c],copyEl)
 

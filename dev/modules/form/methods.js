@@ -36,9 +36,12 @@ export const emit = function(eNotifs){
 
 export const handleCreateForm = function(data){
    
-   // var sb = this.sb 
-   this.createForm(data)
+	// var sb = this.sb 
+	console.log('The form data')
+	console.log(data)
 
+	this.createForm(data)
+	
 }
 
 

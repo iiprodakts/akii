@@ -309,6 +309,9 @@ CORE.prototype.converts = function () {
     },
     clone: function clone(c) {
       return SUKU.clone(c);
+    },
+    objectToArray: function objectToArray(o) {
+      return SUKU.object_to_array(o);
     }
   };
 };
