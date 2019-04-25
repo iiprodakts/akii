@@ -3,14 +3,25 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.createTrunk = exports.render = exports.build = exports.functions = exports.evs = exports.messenger = exports.domTreeCreated = exports.handleDomTreeCreated = exports.emit = exports.listens = exports.init = void 0;
+exports.createTrunk = exports.render = exports.build = exports.functions = exports.evs = exports.messenger = exports.domTreeCreated = exports.handleDomTreeCreated = exports.routeComponent = exports.handleRouteComponent = exports.emit = exports.listens = exports.start = exports.init = void 0;
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var init = function init() {
   var self = this; // console.log('The list')
   // console.log(this.list)
   // this.list.build(self)
 
-  this.listens();
+  this.listens(); //  this.emit({type:'component-mount',data: this.build})
+  //  this.emit({type:'get-component-name',data: ''})
+};
+
+exports.init = init;
+
+var start = function start() {
+  var self = this;
   this.emit({
     type: 'subscribe-to-store',
     data: {
@@ -31,17 +42,18 @@ var init = function init() {
       actions: this.actions,
       reducer: this.reducer
     }
-  }); //  this.emit({type:'component-mount',data: this.build})
-  //  this.emit({type:'get-component-name',data: ''})
+  });
 };
 
-exports.init = init;
+exports.start = start;
 
 var listens = function listens() {
   var sb = this.sb; // var name = 'render-component-'+this.componentname
 
   sb.sb_notifyListen({
-    'dom-tree-created': this.handleDomTreeCreated.bind(this)
+    'dom-tree-created': this.handleDomTreeCreated.bind(this),
+    // 'merge-component': this.handleMergeComponent.bind(this)
+    'route-component': this.handleRouteComponent.bind(this)
   }, sb.moduleMeta.moduleId, sb.moduleMeta.modInstId);
 };
 
@@ -58,6 +70,26 @@ var emit = function emit(eNotifs) {
 };
 
 exports.emit = emit;
+
+var handleRouteComponent = function handleRouteComponent(data) {
+  var sb = this.sb;
+  this.routeComponent(data);
+};
+
+exports.handleRouteComponent = handleRouteComponent;
+
+var routeComponent = function routeComponent(data) {
+  var sb = this.sb;
+  var self = this;
+  data.hasOwnProperty('component') ? data.component.toLowerCase() === self.constructor.name.toLowerCase() ? self.emit({
+    type: 'route-component-set',
+    data: _objectSpread({}, data, {
+      component: self
+    })
+  }) : console.log('The component name and the value are not defined') : console.log('The component name is not defined');
+};
+
+exports.routeComponent = routeComponent;
 
 var handleDomTreeCreated = function handleDomTreeCreated(data) {
   var sb = this.sb;

@@ -4,10 +4,10 @@ import  actions from './actions'
 import  reducer from './reducer'
 import List from './components/list'
 import Form from './components/form'
-import Count from './components/count'
+import Copy from './components/copy'
 
 
-class Todo{
+class Contact{
   
   
   constructor(sandbox){
@@ -16,12 +16,10 @@ class Todo{
     this.actions = actions
     this.reducer = reducer
     this.trunk = null
+    this.components = []
     this.children = [
-
-      new List(this),
-      new Count(this),
-      new Form(this)
-
+     
+      new Copy(this)
     ]
     
 
@@ -30,6 +28,7 @@ class Todo{
 
     this.init = methods.init
     this.listens = methods.listens
+    this.start = methods.start
     this.emit = methods.emit
     this.handleDomTreeCreated = methods.handleDomTreeCreated
     this.domTreeCreated = methods.domTreeCreated
@@ -39,7 +38,9 @@ class Todo{
     this.build = methods.build
     this.createTrunk = methods.createTrunk
     this.render = methods.render
-   
+    this.handleRouteComponent = methods.handleRouteComponent
+    this.routeComponent = methods.routeComponent
+
 
   }
 
@@ -47,4 +48,4 @@ class Todo{
 
 }
 
-export default Todo
+export default Contact

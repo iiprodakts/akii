@@ -332,12 +332,15 @@ export const supubListen = function(evt,data){
 	}
 	self.supub[data.component] = comp
 
-	if(data.component === 'todo'){
+	// if(data.component === 'todo'){
 
-		self.setState(data.component,data.initState)
+	// 	self.setState(data.component,data.initState)
 
 
-	}
+	// }
+
+	self.setState(data.component,data.initState)
+
 }
 
 export const supubEmit = function(evt,component,data = {}){

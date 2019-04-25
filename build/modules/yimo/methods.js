@@ -252,11 +252,11 @@ var supubListen = function supubListen(evt, data) {
     callback: data.callback,
     type: evt
   };
-  self.supub[data.component] = comp;
+  self.supub[data.component] = comp; // if(data.component === 'todo'){
+  // 	self.setState(data.component,data.initState)
+  // }
 
-  if (data.component === 'todo') {
-    self.setState(data.component, data.initState);
-  }
+  self.setState(data.component, data.initState);
 };
 
 exports.supubListen = supubListen;

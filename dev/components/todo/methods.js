@@ -6,6 +6,17 @@ export const init = function(){
     // console.log(this.list)
     // this.list.build(self)
     this.listens()
+
+   
+   //  this.emit({type:'component-mount',data: this.build})
+   //  this.emit({type:'get-component-name',data: ''})
+    
+}
+
+
+export const start = function(){
+     
+    const self = this
     this.emit({type:'subscribe-to-store',data: {
 
         event: 'STATE-CHANGE',
@@ -25,39 +36,66 @@ export const init = function(){
 
     }})
 
-   
-   //  this.emit({type:'component-mount',data: this.build})
-   //  this.emit({type:'get-component-name',data: ''})
-    
 }
+
 
 export const listens = function(){
    
    
-   var sb = this.sb 
-   // var name = 'render-component-'+this.componentname
-   sb.sb_notifyListen({
-       
-        'dom-tree-created' : this.handleDomTreeCreated.bind(this),
+    var sb = this.sb 
+    // var name = 'render-component-'+this.componentname
+    sb.sb_notifyListen({
         
-   },sb.moduleMeta.moduleId,sb.moduleMeta.modInstId)
-}
-
-export const emit = function(eNotifs){
+         'dom-tree-created' : this.handleDomTreeCreated.bind(this),
+         // 'merge-component': this.handleMergeComponent.bind(this)
+         'route-component': this.handleRouteComponent.bind(this)
+         
+    },sb.moduleMeta.moduleId,sb.moduleMeta.modInstId)
+ }
+ 
+ export const emit = function(eNotifs){
+    
+         console.log('The value of this in emit')
+          var sb = this.sb 
+          console.log(eNotifs)
+    
+        sb.sb_notifyEvent({
+        
+              type: eNotifs.type,
+              data: eNotifs.data
+        
+         })
+        
+ 
+ }
+ 
+ export const handleRouteComponent = function(data){
+    
+     var sb = this.sb 
+  
+     this.routeComponent(data)
+     
+     
+ }
+  
+ export const routeComponent = function(data){
+     
+      var sb = this.sb
+      var self = this
    
-        console.log('The value of this in emit')
-         var sb = this.sb 
-         console.log(eNotifs)
-   
-       sb.sb_notifyEvent({
+     
+    
+  
+       data.hasOwnProperty('component') ?
+       data.component.toLowerCase() === self.constructor.name.toLowerCase() ?
+       self.emit({type:'route-component-set',data: {...data,component: self} })
+       : console.log('The component name and the value are not defined')
+       : console.log('The component name is not defined')
        
-             type: eNotifs.type,
-             data: eNotifs.data
-       
-        })
-       
-
-}
+  
+     
+     
+ }
 
 export const handleDomTreeCreated = function(data){
    
@@ -84,6 +122,8 @@ export const domTreeCreated = function(data){
     this.emit({type: 'add-domto-vd',data:{data:data,id: self.constructor.name }})
     
 }
+
+
 
 export const messenger = function(data){
      

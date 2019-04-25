@@ -3,19 +3,26 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.createTrunk = exports.render = exports.build = exports.functions = exports.evs = exports.messenger = exports.domTreeCreated = exports.handleDomTreeCreated = exports.emit = exports.listens = exports.init = void 0;
+exports.createTrunk = exports.render = exports.build = exports.functions = exports.evs = exports.messenger = exports.domTreeCreated = exports.handleDomTreeCreated = exports.mergeComponent = exports.handleMergeComponent = exports.emit = exports.listens = exports.start = exports.init = void 0;
 
 var init = function init() {
   var self = this; // console.log('The list')
   // console.log(this.list)
   // this.list.build(self)
 
-  this.listens();
-  this.emit({
+  this.listens(); //  this.emit({type:'component-mount',data: this.build})
+  //  this.emit({type:'get-component-name',data: ''})
+};
+
+exports.init = init;
+
+var start = function start() {
+  var self = this;
+  self.emit({
     type: 'subscribe-to-store',
     data: {
       event: 'STATE-CHANGE',
-      component: 'todo',
+      component: 'header',
       initState: {
         list: {// items: this.children[0].initState.items
         }
@@ -23,24 +30,24 @@ var init = function init() {
       callback: self.build.bind(self)
     }
   });
-  this.emit({
+  self.emit({
     type: 'connect-to-store',
     data: {
-      component: 'todo',
+      component: 'header',
       actions: this.actions,
       reducer: this.reducer
     }
-  }); //  this.emit({type:'component-mount',data: this.build})
-  //  this.emit({type:'get-component-name',data: ''})
+  });
 };
 
-exports.init = init;
+exports.start = start;
 
 var listens = function listens() {
   var sb = this.sb; // var name = 'render-component-'+this.componentname
 
   sb.sb_notifyListen({
-    'dom-tree-created': this.handleDomTreeCreated.bind(this)
+    'dom-tree-created': this.handleDomTreeCreated.bind(this),
+    'merge-component': this.handleMergeComponent.bind(this)
   }, sb.moduleMeta.moduleId, sb.moduleMeta.modInstId);
 };
 
@@ -57,6 +64,49 @@ var emit = function emit(eNotifs) {
 };
 
 exports.emit = emit;
+
+var handleMergeComponent = function handleMergeComponent(data) {
+  var sb = this.sb;
+  this.mergeComponent(data); // if(!sb.view.contains(data)){
+  // 	sb.sb_addChild(sb.view,data)
+  // 	this.emit({type:'stop-preloader',data:''})
+  //     this.emit({type:'create-links',data:''})
+  // }
+};
+
+exports.handleMergeComponent = handleMergeComponent;
+
+var mergeComponent = function mergeComponent(data) {
+  var sb = this.sb;
+  var self = this;
+
+  if (data.hasOwnProperty('components')) {
+    for (var i = 0; i < data.components.length; i++) {
+      if (data.components[i] === this.constructor.name.toLowerCase()) {
+        console.log('The value of this in Footer');
+        console.log(self); // if(i === data.components.length -1){
+        //     console.log('On About,merging ends')
+        //     self.emit({type:'component-merged',data:{
+        //         component: self,
+        //         complete: true
+        //     }})
+        // }else{
+
+        self.emit({
+          type: 'component-merged',
+          data: {
+            component: self
+          }
+        }); //}
+        // data.components.splice(i,1)
+
+        break;
+      }
+    }
+  }
+};
+
+exports.mergeComponent = mergeComponent;
 
 var handleDomTreeCreated = function handleDomTreeCreated(data) {
   var sb = this.sb;
@@ -570,7 +620,7 @@ exports.render = render;
 
 var createTrunk = function createTrunk() {
   var sb = this.sb;
-  var trunk = sb.sb_createElement('main');
+  var trunk = sb.sb_createElement('header');
   sb.sb_addProperty(trunk, 'id', this.constructor.name.toLowerCase());
   sb.sb_addProperty(trunk, 'class', 'component-view bg-dark pd-top-fd-xx-tn pd-left-fl-bt');
   return trunk;

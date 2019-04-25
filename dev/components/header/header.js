@@ -30,6 +30,7 @@ class Header{
 
     this.init = methods.init
     this.listens = methods.listens
+    this.start = methods.start
     this.emit = methods.emit
     this.handleDomTreeCreated = methods.handleDomTreeCreated
     this.domTreeCreated = methods.domTreeCreated
@@ -39,6 +40,8 @@ class Header{
     this.build = methods.build
     this.createTrunk = methods.createTrunk
     this.render = methods.render
+    this.handleMergeComponent = methods.handleMergeComponent
+    this.mergeComponent = methods.mergeComponent
    
 
   }

@@ -21,10 +21,10 @@ var Store = function Store(sandbox) {
   this.reducers = {};
   this.supub = {}; // console.log('THE STORE')
   // console.log(this.supub)
-  //  console.log('THE STORE STATE PROPERTY')
-  //  console.log(this.sb.sb_jsToJson(this.state))
-  //  console.log(this.state)
-  // // methods
+
+  console.log('THE STORE STATE PROPERTY'); //  console.log(this.sb.sb_jsToJson(this.state))
+
+  console.log(this.state); // // methods
 
   this.init = methods.init;
   this.listens = methods.listens;

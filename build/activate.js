@@ -19,6 +19,8 @@ var Activator = function Activator(dependencies, libs) {
   var sandbox = new dependencies.SANDBOX(core); // console.log('The core before modules')
   // console.log(sandbox.sb_jsToJson(core))
 
+  console.log('The libs');
+  console.log(libs);
   libs.forEach(function (lib) {
     for (var moco in lib) {
       // console.log('Inside activate')
@@ -44,7 +46,7 @@ var Activator = function Activator(dependencies, libs) {
         } // End of check attributes length if statement
 
 
-        core.createModule(new lib[moco](sandbox.create(moduId, modInstId)), moduId, modInstId); // console.log(`Currently starting module: ${moco}`)
+        moco === 'activator' ? core.createModule(new lib[moco](sandbox.create(moduId, modInstId), core), moduId, modInstId) : core.createModule(new lib[moco](sandbox.create(moduId, modInstId)), moduId, modInstId); // console.log(`Currently starting module: ${moco}`)
 
         core.startModule(moduId, modInstId); // console.log('Dependicies')
         // console.log(typeof dependencies.core)

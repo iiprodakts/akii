@@ -14,6 +14,10 @@ var _index6 = _interopRequireDefault(require("./modules/vd/index"));
 
 var _index7 = _interopRequireDefault(require("./modules/form/index"));
 
+var _index8 = _interopRequireDefault(require("./modules/prowler/index"));
+
+var _index9 = _interopRequireDefault(require("./modules/router/index"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 module.exports = {
@@ -23,5 +27,7 @@ module.exports = {
   Aka: _index3.default,
   List: _index4.default,
   Dom: _index5.default,
-  Form: _index7.default
+  Form: _index7.default,
+  Prowler: _index8.default,
+  Router: _index9.default
 };

@@ -26,6 +26,7 @@ var emit = function emit(eNotifs) {
   var sb = this.sb;
   console.log('Module: Aka emits event: ' + eNotifs.type);
   console.log('Event data: ' + eNotifs.data);
+  console.log(eNotifs);
   sb.sb_notifyEvent({
     type: eNotifs.type,
     data: eNotifs.data
@@ -162,9 +163,13 @@ var addOps = function addOps(el, ops) {
 
   if (ops.set) {
     for (var p in ops.meta) {
+      console.log('THE CURRENT ELEMENT CONTAINS THE EMIT FUNCTIONALITY FUNCTIONALITY');
+
       if (p === 'emit') {
         // console.log('The data of emit property')
         // console.log(ops.meta[p])
+        console.log('THE CURRENT ELEMENT CONTAINS THE EMIT FUNCTIONALITY FUNCTIONALITY');
+
         if (ops.meta[p].hasOwnProperty('presents') && ops.meta[p].hasOwnProperty('children')) {
           console.log('The style string');
           var presents = ops.meta[p].presents;

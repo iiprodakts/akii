@@ -34,6 +34,7 @@ var Header = function Header(sandbox) {
 
   this.init = methods.init;
   this.listens = methods.listens;
+  this.start = methods.start;
   this.emit = methods.emit;
   this.handleDomTreeCreated = methods.handleDomTreeCreated;
   this.domTreeCreated = methods.domTreeCreated;
@@ -43,6 +44,8 @@ var Header = function Header(sandbox) {
   this.build = methods.build;
   this.createTrunk = methods.createTrunk;
   this.render = methods.render;
+  this.handleMergeComponent = methods.handleMergeComponent;
+  this.mergeComponent = methods.mergeComponent;
 };
 
 var _default = Header;

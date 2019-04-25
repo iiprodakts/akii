@@ -1,4 +1,4 @@
 
-import Todo from "./todo";
+import Footer from "./footer";
 
-export default Todo
+export default Footer

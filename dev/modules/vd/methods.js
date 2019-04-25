@@ -80,7 +80,6 @@ export const domTreeCreated = function(data){
     
 }
 
-
 export const beginDomiks = function(data){
    
    var sb = this.sb 
@@ -215,21 +214,26 @@ export const checkVD = function(data){
       // console.log('The virtaual dom object has no children at this point')
       // console.log(sb.sb_jsToJson(vd))
       // console.log(vd.length)
-      vod.push({
 
-            view: data.trunk.id,
-            children: [
+      data.hasOwnProperty('route') && data.route === true ? 
+      
+        ''
+      :
+         vod.push({
 
-               {
+               view: data.trunk.id,
+               children: [
 
-                  name: data.name,
-                  element: Object.keys(data)[2],
-                  vd: sb.sb_clone(data[Object.keys(data)[2]])
-               }
+                  {
 
-            ]
+                     name: data.name,
+                     element: Object.keys(data)[2],
+                     vd: sb.sb_clone(data[Object.keys(data)[2]])
+                  }
 
-      })
+               ]
+
+         })
 
       console.log('The object from clone')
       console.log(sb.sb_clone(data[Object.keys(data)[2]]))
@@ -259,11 +263,6 @@ export const checkVD = function(data){
 export const checkDOM = function(data){
    
    var sb = this.sb
-   
-
-
-   
-
 }
 
 export const startDiffing = function(data){

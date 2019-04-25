@@ -18,7 +18,9 @@ export const  Activator = (dependencies,libs)=>{
 		let sandbox = new dependencies.SANDBOX(core)
 		
 		// console.log('The core before modules')
-	    // console.log(sandbox.sb_jsToJson(core))
+		// console.log(sandbox.sb_jsToJson(core))
+		console.log('The libs')
+		console.log(libs)
 
 		libs.forEach( lib => {
 
@@ -65,12 +67,23 @@ export const  Activator = (dependencies,libs)=>{
 					}// End of check attributes length if statement
 
 
-					core.createModule(
-				
-						new lib[moco](sandbox.create(moduId,modInstId)),
-						moduId,modInstId
-		
-					);
+					moco === 'activator' ?
+
+						core.createModule(
+					
+							new lib[moco](sandbox.create(moduId,modInstId),core),
+							moduId,modInstId
+			
+						)
+
+					: 
+
+						core.createModule(
+						
+							new lib[moco](sandbox.create(moduId,modInstId)),
+							moduId,modInstId
+			
+						)
 		
 					// console.log(`Currently starting module: ${moco}`)
 					core.startModule(moduId,modInstId);

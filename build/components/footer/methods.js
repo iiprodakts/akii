@@ -3,22 +3,30 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.createTrunk = exports.render = exports.build = exports.functions = exports.evs = exports.messenger = exports.domTreeCreated = exports.handleDomTreeCreated = exports.emit = exports.listens = exports.init = void 0;
+exports.createTrunk = exports.render = exports.build = exports.functions = exports.evs = exports.messenger = exports.domTreeCreated = exports.mergeComponent = exports.handleMergeComponent = exports.handleDomTreeCreated = exports.emit = exports.listens = exports.start = exports.init = void 0;
 
 var init = function init() {
   var self = this; // console.log('The list')
   // console.log(this.list)
   // this.list.build(self)
 
-  this.listens();
+  this.listens(); //  this.emit({type:'component-mount',data: this.build})
+  //  this.emit({type:'get-component-name',data: ''})
+};
+
+exports.init = init;
+
+var start = function start() {
+  var self = this;
   this.emit({
     type: 'subscribe-to-store',
     data: {
       event: 'STATE-CHANGE',
-      component: 'todo',
+      component: 'footer',
       initState: {
         list: {
-          items: this.children[0].initState.items
+          // items: this.children[0].initState.items
+          items: ['1', '2']
         }
       },
       callback: self.build.bind(self)
@@ -27,21 +35,22 @@ var init = function init() {
   this.emit({
     type: 'connect-to-store',
     data: {
-      component: 'todo',
+      component: 'footer',
       actions: this.actions,
       reducer: this.reducer
     }
-  }); //  this.emit({type:'component-mount',data: this.build})
-  //  this.emit({type:'get-component-name',data: ''})
+  });
 };
 
-exports.init = init;
+exports.start = start;
 
 var listens = function listens() {
   var sb = this.sb; // var name = 'render-component-'+this.componentname
 
   sb.sb_notifyListen({
-    'dom-tree-created': this.handleDomTreeCreated.bind(this)
+    'dom-tree-created': this.handleDomTreeCreated.bind(this),
+    'merge-component': this.handleMergeComponent.bind(this) // 'route-component' : this.handleRouteComponent.bind(this)
+
   }, sb.moduleMeta.moduleId, sb.moduleMeta.modInstId);
 };
 
@@ -69,6 +78,68 @@ var handleDomTreeCreated = function handleDomTreeCreated(data) {
 };
 
 exports.handleDomTreeCreated = handleDomTreeCreated;
+
+var handleMergeComponent = function handleMergeComponent(data) {
+  var sb = this.sb;
+  this.mergeComponent(data); // if(!sb.view.contains(data)){
+  // 	sb.sb_addChild(sb.view,data)
+  // 	this.emit({type:'stop-preloader',data:''})
+  //     this.emit({type:'create-links',data:''})
+  // }
+};
+
+exports.handleMergeComponent = handleMergeComponent;
+
+var mergeComponent = function mergeComponent(data) {
+  var sb = this.sb;
+  var self = this;
+
+  if (data.hasOwnProperty('components')) {
+    for (var i = 0; i < data.components.length; i++) {
+      if (data.components[i] === this.constructor.name.toLowerCase()) {
+        console.log('The value of this in Footer');
+        console.log(self); // if(i === data.components.length -1){
+        //     console.log('On Footer,merging ends')
+        //     self.emit({type:'component-merged',data:{
+        //         component: self,
+        //         complete: true
+        //     }})
+        // }else{
+
+        self.emit({
+          type: 'component-merged',
+          data: {
+            component: self
+          }
+        }); //}
+        // data.components.splice(i,1)
+
+        break;
+      }
+    }
+  } // data.hasOwnProperty('components') && data.components.length > 0 ? 
+  //     data.components.forEach((comp,i)=>{
+  //         if(comp.component === this.constructor.name.toLowerCase() && i === comp.index ){
+  //             console.log('The value of this in Footer')
+  //             console.log(self)
+  //             self.emit({type:'component-merged',data:{
+  //                 component: self
+  //             }})
+  //             data.components.splice(i,1)
+  //             break;
+  //         }
+  //     })
+  // : console.log('The data object contains do data') 
+  // console.log(data.components)
+  // if(!sb.view.contains(data)){
+  // 	sb.sb_addChild(sb.view,data)
+  // 	this.emit({type:'stop-preloader',data:''})
+  //     this.emit({type:'create-links',data:''})
+  // }
+
+};
+
+exports.mergeComponent = mergeComponent;
 
 var domTreeCreated = function domTreeCreated(data) {
   var self = this;
@@ -571,9 +642,9 @@ exports.render = render;
 
 var createTrunk = function createTrunk() {
   var sb = this.sb;
-  var trunk = sb.sb_createElement('main');
+  var trunk = sb.sb_createElement('footer');
   sb.sb_addProperty(trunk, 'id', this.constructor.name.toLowerCase());
-  sb.sb_addProperty(trunk, 'class', 'component-view');
+  sb.sb_addProperty(trunk, 'class', 'fg-dark');
   return trunk;
 };
 

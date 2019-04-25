@@ -34,6 +34,7 @@ var Todo = function Todo(sandbox) {
 
   this.init = methods.init;
   this.listens = methods.listens;
+  this.start = methods.start;
   this.emit = methods.emit;
   this.handleDomTreeCreated = methods.handleDomTreeCreated;
   this.domTreeCreated = methods.domTreeCreated;
@@ -43,6 +44,8 @@ var Todo = function Todo(sandbox) {
   this.build = methods.build;
   this.createTrunk = methods.createTrunk;
   this.render = methods.render;
+  this.handleRouteComponent = methods.handleRouteComponent;
+  this.routeComponent = methods.routeComponent;
 };
 
 var _default = Todo;

@@ -31,7 +31,7 @@ function () {
         data: {
           trunk: trunk,
           name: name,
-          div: {
+          nav: {
             props: {
               presentational: {
                 set: true,
@@ -76,11 +76,23 @@ function () {
                       set: true,
                       presents: {
                         class: "font-fd-xx-tn fg-light d-inline-block link",
-                        content: "072 415 6969"
+                        content: "072 415 6969",
+                        href: '/home'
                       }
                     },
                     functional: {
-                      set: false
+                      set: true,
+                      meta: {
+                        emit: {
+                          type: 'router-link',
+                          data: {
+                            type: 'datum',
+                            data: {
+                              to: '/home'
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }]
@@ -104,11 +116,23 @@ function () {
                       set: true,
                       presents: {
                         class: "font-fd-xx-tn fg-light d-inline-block link",
-                        content: "Monday-Sat: 08am - 17 pm"
+                        content: "Monday-Sat: 08am - 17 pm",
+                        href: '/about'
                       }
                     },
                     functional: {
-                      set: false
+                      set: true,
+                      meta: {
+                        emit: {
+                          type: 'router-link',
+                          data: {
+                            type: 'datum',
+                            data: {
+                              to: '/about'
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }]
@@ -132,11 +156,23 @@ function () {
                       set: true,
                       presents: {
                         class: "font-fd-xx-tn d-inline-block fg-light link",
-                        content: "support@ibrc.co.za"
+                        content: "support@ibrc.co.za",
+                        href: '/contact'
                       }
                     },
                     functional: {
-                      set: false
+                      set: true,
+                      meta: {
+                        emit: {
+                          type: 'router-link',
+                          data: {
+                            type: 'datum',
+                            data: {
+                              to: '/contact'
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }]

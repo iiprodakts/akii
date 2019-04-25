@@ -24,6 +24,7 @@ export const emit = function(eNotifs){
 	var sb = this.sb
 	console.log('Module: Aka emits event: '+ eNotifs.type) 
 	console.log('Event data: '+eNotifs.data)
+	console.log(eNotifs)
 	
 	
 		
@@ -226,10 +227,12 @@ export const addOps = function(el,ops){
 
 		for(let p in ops.meta){
 
+			console.log('THE CURRENT ELEMENT CONTAINS THE EMIT FUNCTIONALITY FUNCTIONALITY')
 			if(p === 'emit'){
 
 				// console.log('The data of emit property')
 				// console.log(ops.meta[p])
+				console.log('THE CURRENT ELEMENT CONTAINS THE EMIT FUNCTIONALITY FUNCTIONALITY')
 				if(ops.meta[p].hasOwnProperty('presents') && ops.meta[p].hasOwnProperty('children')){
 
 					console.log('The style string')
@@ -263,6 +266,7 @@ export const addOps = function(el,ops){
 
 				}else{
 
+					
 					this.emit({type: ops.meta[p].type,data: {parent: el,data: ops.meta[p].data.data}})
 
 				}
